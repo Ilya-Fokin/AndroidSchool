@@ -1,6 +1,6 @@
 package com.example.lesson_0_fokin
 
-class Validator {
+object Validator {
     fun checkAttack(attack: Int): Boolean {
         return attack in 1..30
     }

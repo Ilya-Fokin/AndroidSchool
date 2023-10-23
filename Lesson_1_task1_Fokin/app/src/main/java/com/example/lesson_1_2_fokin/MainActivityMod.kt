@@ -14,7 +14,7 @@ class MainActivityMod : AppCompatActivity()  {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.mod_activity_main)
         val journalTreeSet = TreeSet<Student>()
-    val journal: Journal<TreeSet<Student>> = Journal(journal = journalTreeSet)
+    val journal: JournalImpl<TreeSet<Student>> = JournalImpl(journal = journalTreeSet)
     findViewById<Button>(R.id.buttonAddStudent).setOnClickListener {
         val input = findViewById<EditText>(R.id.editTextStudentData).text.toString()
         if (Validator.checkFullName(input)) {
@@ -27,14 +27,12 @@ class MainActivityMod : AppCompatActivity()  {
             val textViewWithAllStudents = findViewById<TextView>(R.id.textViewAllStudent)
             textViewWithAllStudents.text = ""
             repeat(journal.getAllStudent().size) {index ->
-                textViewWithAllStudents.append(journal.getAllStudent()[index].secondName + " "
-                        + journal.getAllStudent()[index].firstName + "\n")
+                textViewWithAllStudents.append("${journal.getAllStudent()[index].toString()}\n")
             }
         }
 
         findViewById<Button>(R.id.buttonMainActivity).setOnClickListener {
-            val intent = Intent(this@MainActivityMod, MainActivity::class.java)
-            startActivity(intent)
+            super.finish()
         }
     }
 }

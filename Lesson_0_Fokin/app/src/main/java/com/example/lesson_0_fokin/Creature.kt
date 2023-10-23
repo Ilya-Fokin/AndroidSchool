@@ -6,13 +6,12 @@ abstract class Creature(
     private val attack: Int,
     private val protection: Int,
     private val maxHealth: Int,
-    private val damage: Array<Int>): Fight {
+    private val damage: Array<Int>,
+    private var healing: Int = 4,
+    protected var state: State = State.ALIVE,
+    private var currentHealth: Double = maxHealth.toDouble()){
 
-    abstract var healing: Int
-    abstract var state: State
-    protected var currentHealth: Double = maxHealth.toDouble()
-
-    override fun doFight(creature: Creature): Creature {
+    fun doFight(creature: Creature): Creature {
         val attackModifier: Int = attackModifier(creature)
 
         for (i in 0 until attackModifier) {
@@ -30,7 +29,7 @@ abstract class Creature(
         return creature
     }
 
-    override fun doHealing(): String {
+    fun doHealing(): String {
         var result: String = ""
         if (currentHealth == maxHealth.toDouble()) {
             result = "У Вас максимальное здоровье"
@@ -49,9 +48,7 @@ abstract class Creature(
         return result
     }
 
-    override fun die(): String {
-        TODO("Not yet implemented")
-    }
+    abstract fun die(): String
 
     private fun attackModifier(creature: Creature): Int {
         val attackModifier: Int = this.attack - creature.protection + 1

@@ -15,7 +15,6 @@ import java.time.format.DateTimeFormatter
 import java.util.TreeSet
 
 class SecondActivity : AppCompatActivity() {
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.second_activity)
@@ -45,14 +44,12 @@ class SecondActivity : AppCompatActivity() {
             textViewWithAllStudents.text = ""
             for (elem in journalMap) {
                 val student: Student = elem.value
-                textViewWithAllStudents.append("${student.id} ${student.secondName} ${student.firstName} " +
-                        "${student.grade} ${student.yearOfBirth} \n")
+                textViewWithAllStudents.append("${student.toString()} \n")
             }
         }
 
         findViewById<Button>(R.id.buttonMainActivity).setOnClickListener {
-            val intent = Intent(this@SecondActivity, MainActivity::class.java)
-            startActivity(intent)
+            super.finish()
         }
     }
 }

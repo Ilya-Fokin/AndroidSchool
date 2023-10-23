@@ -2,9 +2,8 @@ package com.example.lesson_1_2_fokin
 
 import java.time.Year
 
-data class Student (val id: Long = System.currentTimeMillis(), val firstName: String, val secondName: String): Comparable<Student> {
-    lateinit var yearOfBirth: String
-    lateinit var grade: String
+data class Student (val id: Long = System.currentTimeMillis(), val firstName: String, val secondName: String,
+                    var yearOfBirth: String = "", var grade: String = ""): Comparable<Student> {
     override fun compareTo(other: Student): Int {
         return if (secondName == other.secondName) {
             firstName.compareTo(other.firstName)
@@ -12,7 +11,7 @@ data class Student (val id: Long = System.currentTimeMillis(), val firstName: St
     }
 
     override fun toString(): String {
-        return "Student (id=$id, firstName='$firstName', secondName='$secondName',yearOfBirth='$yearOfBirth', grade='$grade')"
+        return "$id $firstName $secondName $yearOfBirth $grade"
     }
 
 }

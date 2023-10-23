@@ -12,7 +12,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val journal: Journal<MutableList<Student>> = Journal(journal = mutableListOf())
+        val journal: JournalImpl<MutableList<Student>> = JournalImpl(journal = mutableListOf())
         findViewById<Button>(R.id.buttonAddStudent).setOnClickListener {
             val input = findViewById<EditText>(R.id.editTextStudentData).text.toString()
             if (Validator.checkFullName(input)) {
@@ -25,18 +25,17 @@ class MainActivity : AppCompatActivity() {
             val textViewWithAllStudents = findViewById<TextView>(R.id.textViewAllStudent)
             textViewWithAllStudents.text = ""
             repeat(journal.getAllStudent().size) {index ->
-                textViewWithAllStudents.append(journal.getAllStudent()[index].secondName + " "
-                        + journal.getAllStudent()[index].firstName + "\n")
+                textViewWithAllStudents.append("${journal.getAllStudent()[index].toString()}\n")
             }
         }
 
         findViewById<Button>(R.id.buttonModMainActivity).setOnClickListener {
-            val intent = Intent(this@MainActivity, MainActivityMod::class.java)
+            val intent = Intent(this, MainActivityMod::class.java)
             startActivity(intent)
         }
 
         findViewById<Button>(R.id.buttonSecondActivity).setOnClickListener {
-            val intent = Intent(this@MainActivity, SecondActivity::class.java)
+            val intent = Intent(this, SecondActivity::class.java)
             startActivity(intent)
         }
     }
