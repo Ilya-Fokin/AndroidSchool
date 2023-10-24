@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Lesson_2_Fokin</string>
+    <string name="Pushkin">Я вас любил: любовь еще, быть может,
+                           В душе моей угасла не совсем;
+                           Но пусть она вас больше не тревожит;
+                           Я не хочу печалить вас ничем.</string>
+    <string name="happyOrNot">Боль и страдание</string>
+    <string name="textButtonOnActivityText">Стихи Пушкина</string>
+    <string name="textButtonOnActivityDrawable">Фигуры</string>
+    <string name="button_text">Кнопка 1</string>
+</resources>
