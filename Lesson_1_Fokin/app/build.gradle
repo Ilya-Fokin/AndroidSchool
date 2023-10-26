@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace 'com.example.lesson_1_fokin'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.example.lesson_1_fokin"

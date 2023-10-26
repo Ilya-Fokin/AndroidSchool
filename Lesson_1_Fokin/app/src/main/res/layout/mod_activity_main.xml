@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivityMod">
 
     <TextView
         android:id="@+id/textView"
@@ -23,8 +23,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:ems="10"
         android:minHeight="48dp"
+        android:ems="10"
         android:hint="Фамилия и имя студента"
         android:inputType="text"
         android:paddingStart="15sp"
@@ -71,27 +71,15 @@
         app:layout_constraintVertical_bias="0.077" />
 
     <Button
-        android:id="@+id/buttonModMainActivity"
+        android:id="@+id/buttonMainActivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Модификация (уникальные значения)"
+        android:text="Первоначальная страница"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.871" />
-
-    <Button
-        android:id="@+id/buttonSecondActivity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Вторая страница"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.961" />
+        app:layout_constraintVertical_bias="0.906" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

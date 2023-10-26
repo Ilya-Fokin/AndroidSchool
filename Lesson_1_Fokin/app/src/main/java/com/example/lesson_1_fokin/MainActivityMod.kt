@@ -1,18 +1,20 @@
 package com.example.lesson_1_fokin
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import java.util.TreeSet
 
-class MainActivity : AppCompatActivity() {
+class MainActivityMod : AppCompatActivity()  {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        val journal: JournalImpl<MutableList<Student>> = JournalImpl(journal = mutableListOf())
+        setContentView(R.layout.mod_activity_main)
+        val journalTreeSet = TreeSet<Student>()
+        val journal: JournalImpl<TreeSet<Student>> = JournalImpl(journal = journalTreeSet)
         findViewById<Button>(R.id.buttonAddStudent).setOnClickListener {
             val input = findViewById<EditText>(R.id.editTextStudentData).text.toString()
             if (Validator.checkFullName(input)) {
@@ -29,14 +31,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        findViewById<Button>(R.id.buttonModMainActivity).setOnClickListener {
-            val intent = Intent(this, MainActivityMod::class.java)
-            startActivity(intent)
-        }
-
-        findViewById<Button>(R.id.buttonSecondActivity).setOnClickListener {
-            val intent = Intent(this, SecondActivity::class.java)
-            startActivity(intent)
+        findViewById<Button>(R.id.buttonMainActivity).setOnClickListener {
+            super.finish()
         }
     }
 }
