@@ -1,8 +1,0 @@
-<resources>
-    <string name="app_name">Lesson_2_Fokin</string>
-    <string name="pushkin">Sorry, there is nothing</string>
-    <string name="happy_or_not">Боль и страдание</string>
-    <string name="text_button_on_activity_text">Стихи Пушкина</string>
-    <string name="text_button_on_activity_drawable">Фигуры</string>
-    <string name="button_text">Кнопка 1</string>
-</resources>
