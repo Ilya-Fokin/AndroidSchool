@@ -16,10 +16,10 @@ class ThirdActivity : AppCompatActivity() {
             "HIE023UOI88", "Санкт-Петербург"
         )
         loadProfile(profile)
-        binding.backButton.setOnClickListener {
+        binding.toolbar.setNavigationOnClickListener {
             super.finish()
         }
-        binding.mainEditButton.setOnClickListener {
+        binding.toolbar.setOnMenuItemClickListener {
             Toast.makeText(this, getString(R.string.edit_toast), Toast.LENGTH_SHORT).show()
             true
         }

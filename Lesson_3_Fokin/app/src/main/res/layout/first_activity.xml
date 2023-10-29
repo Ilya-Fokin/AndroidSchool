@@ -13,78 +13,57 @@
         android:layout_height="wrap_content">
 
         <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/material_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingEnd="@dimen/default_indent">
-
-            <ImageButton
-                android:contentDescription="@string/content_decription_arrow_back"
-                android:id="@+id/back_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_arrow_back_black_24px"
-                android:background="?selectableItemBackground"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/title_toolbar"
-                android:textSize="20sp"
-                android:layout_marginStart="31dp"/>
-
-            <ImageButton
-                android:contentDescription="@string/edit_button"
-                android:id="@+id/main_edit_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:src="@drawable/ic_edit_black_24px"
-                android:background="?selectableItemBackground"/>
-
-        </com.google.android.material.appbar.MaterialToolbar>
+            app:navigationIcon="@drawable/ic_arrow_back_black_24px"
+            app:title="@string/title_toolbar"
+            app:titleTextAppearance="@style/BaseTextViewStyle.ToolbarTitle"
+            app:menu="@menu/menu_edit"
+            />
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/default_indent"
             android:layout_marginEnd="@dimen/default_indent"
-            style="@style/BaseTextViewStyle.CardProfile"
             >
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:padding="@dimen/default_indent">
+                android:padding="@dimen/default_indent"
+                >
 
                 <ImageView
+                    android:id="@+id/img_avatar"
                     android:contentDescription="@string/content_description_avatar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="end"
                     android:src="@drawable/img_profile_spechialist" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/Base.Theme.Lesson_3_Fokin"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:layout_marginStart="@dimen/default_indent"
+                    >
 
                     <TextView
                         android:id="@+id/num_of_card"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/default_indent"
                         android:text="@string/card_number"
-                        android:textSize="20sp" />
+                        style="@style/BaseTextViewStyle.CardProfile"
+                         />
 
                     <TextView
                         android:id="@+id/post"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/default_indent"
                         android:text="@string/post"
-                        android:textSize="20sp" />
+                        style="@style/BaseTextViewStyle.CardProfile" />
 
                 </LinearLayout>
 
@@ -108,39 +87,29 @@
                 android:id="@+id/title_list_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingBottom="12dp"
+                android:layout_marginBottom="12dp"
                 android:text="@string/title_personal_info"
                 style="@style/BaseTextViewStyle.TitleInfo"/>
 
             <include
                 layout="@layout/view_person_param"
-                android:id="@+id/view_person_param_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:id="@+id/view_person_param_name" />
 
             <include
                 layout="@layout/view_person_param"
-                android:id="@+id/view_person_param_surname"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:id="@+id/view_person_param_surname"/>
 
             <include
                 layout="@layout/view_person_param"
-                android:id="@+id/view_person_param_email"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:id="@+id/view_person_param_email"/>
 
             <include
                 layout="@layout/view_person_param"
-                android:id="@+id/view_person_param_login"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:id="@+id/view_person_param_login" />
 
             <include
                 layout="@layout/view_person_param"
-                android:id="@+id/view_person_param_city"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:id="@+id/view_person_param_city" />
 
         </LinearLayout>
 
@@ -154,6 +123,7 @@
         android:padding="@dimen/default_indent"
         android:stateListAnimator="@null"
         android:text="@string/log_out_of_your_account"
-        app:icon="@drawable/ic_menu_exit" />
+        app:icon="@drawable/ic_menu_exit"
+        style="@style/BaseTextViewStyle.ButtonExit"/>
 
 </LinearLayout>

@@ -21,10 +21,10 @@ class FirstActivity : AppCompatActivity() {
         val profile: Profile = Profile("Карта №7898769", "Специалист","Анастасия", "Антонина", "any.box@gmail.ru",
             "HIE023UOI88", "Санкт-Петербург")
         loadProfile(profile)
-        binding.backButton.setOnClickListener {
+        binding.materialToolbar.setNavigationOnClickListener {
             super.finish()
         }
-        binding.mainEditButton.setOnClickListener {
+        binding.materialToolbar.setOnMenuItemClickListener {
             Toast.makeText(this, getString(R.string.edit_toast), Toast.LENGTH_SHORT).show()
             true
         }
