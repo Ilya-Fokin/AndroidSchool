@@ -1,0 +1,9 @@
+<resources>
+    <string name="pushkin">Я вас любил: любовь еще, быть может,
+                           В душе моей угасла не совсем;
+                           Но пусть она вас больше не тревожит;
+                           Я не хочу печалить вас ничем.</string>
+    <string name="text_button_on_activity_text">Стихи Пушкина</string>
+    <string name="text_button_on_activity_drawable">Фигуры</string>
+    <string name="button_text">Кнопка 1</string>
+</resources>

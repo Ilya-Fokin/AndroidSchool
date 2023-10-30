@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Lesson_1_Fokin</string>
+    <string name="buttonAddStudent">Добавить студента</string>
+    <string name="textViewTitleSchoolJournal1">Школьный журнал</string>
+</resources>
