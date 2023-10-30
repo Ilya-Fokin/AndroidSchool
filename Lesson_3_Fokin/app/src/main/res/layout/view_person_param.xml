@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/info_layout"
+    android:id="@+id/infoLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
@@ -10,11 +10,11 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="30dp"
+        android:layout_toStartOf="@+id/editButton"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/name_param"
+            android:id="@+id/nameParam"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="2dp"
@@ -34,12 +34,12 @@
     </LinearLayout>
 
     <ImageButton
-        android:id="@+id/edit_button"
+        android:id="@+id/editButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:background="?selectableItemBackground"
+        android:background="?selectableItemBackgroundBorderless"
         android:visibility="invisible"
         android:src="@drawable/ic_edit_black_24px" />
 

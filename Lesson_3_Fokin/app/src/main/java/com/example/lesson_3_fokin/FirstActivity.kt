@@ -18,7 +18,7 @@ class FirstActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = FirstActivityBinding.inflate(layoutInflater) //initializing the binding class
         setContentView(binding.root)
-        val profile: Profile = Profile("Карта №7898769", "Специалист","Анастасия", "Антонина", "any.box@gmail.ru",
+        val profile: Profile = Profile(7898769, "Специалист","Анастасия", "Антонина", "any.box@gmail.ru",
             "HIE023UOI88", "Санкт-Петербург")
         loadProfile(profile)
         binding.materialToolbar.setNavigationOnClickListener {
@@ -40,7 +40,7 @@ class FirstActivity : AppCompatActivity() {
 
     private fun loadProfile(profile: Profile) {
         with(binding) {
-            numOfCard.text = profile.numOfCard
+            numOfCard.text = getString(R.string.num_of_card, profile.numOfCard);
             post.text = profile.post
 
             viewPersonParamName.nameParam.text = getString(R.string.name)

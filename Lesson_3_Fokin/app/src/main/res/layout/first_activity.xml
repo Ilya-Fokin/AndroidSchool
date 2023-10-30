@@ -13,7 +13,7 @@
         android:layout_height="wrap_content">
 
         <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/material_toolbar"
+            android:id="@+id/materialToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:navigationIcon="@drawable/ic_arrow_back_black_24px"
@@ -37,7 +37,7 @@
                 >
 
                 <ImageView
-                    android:id="@+id/img_avatar"
+                    android:id="@+id/imgAvatar"
                     android:contentDescription="@string/content_description_avatar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -51,7 +51,7 @@
                     >
 
                     <TextView
-                        android:id="@+id/num_of_card"
+                        android:id="@+id/numOfCard"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/card_number"
@@ -84,7 +84,7 @@
             android:padding="@dimen/default_indent">
 
             <TextView
-                android:id="@+id/title_list_info"
+                android:id="@+id/titleListInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
@@ -93,30 +93,30 @@
 
             <include
                 layout="@layout/view_person_param"
-                android:id="@+id/view_person_param_name" />
+                android:id="@+id/viewPersonParamName" />
 
             <include
                 layout="@layout/view_person_param"
-                android:id="@+id/view_person_param_surname"/>
+                android:id="@+id/viewPersonParamSurname"/>
 
             <include
                 layout="@layout/view_person_param"
-                android:id="@+id/view_person_param_email"/>
+                android:id="@+id/viewPersonParamEmail"/>
 
             <include
                 layout="@layout/view_person_param"
-                android:id="@+id/view_person_param_login" />
+                android:id="@+id/viewPersonParamLogin" />
 
             <include
                 layout="@layout/view_person_param"
-                android:id="@+id/view_person_param_city" />
+                android:id="@+id/viewPersonParamCity" />
 
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/exit_acc_button"
+        android:id="@+id/exitAccButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?selectableItemBackground"

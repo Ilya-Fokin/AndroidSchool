@@ -12,7 +12,7 @@ class ThirdActivity : AppCompatActivity() {
         binding = ThirdActivityBinding.inflate(layoutInflater) //initializing the binding class
         setContentView(binding.root)
         val profile: Profile = Profile(
-            "Карта №7898769", "Специалист", "Анастасия", "Антонина", "any.box@gmail.ru",
+            7898769, "Специалист", "Анастасия", "Антонина", "any.box@gmail.ru",
             "HIE023UOI88", "Санкт-Петербург"
         )
         loadProfile(profile)
@@ -35,7 +35,7 @@ class ThirdActivity : AppCompatActivity() {
 
     private fun loadProfile(profile: Profile) {
         with(binding) {
-            numOfCard.text = profile.numOfCard
+            numOfCard.text = getString(R.string.num_of_card, profile.numOfCard);
             post.text = profile.post
 
             viewPersonParamName.nameParam.text = getString(com.example.lesson_3_fokin.R.string.name)

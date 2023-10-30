@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.lesson_3_fokin.databinding.SecondActivityBinding
+import com.example.lesson_3_fokin.R
 
 class SecondActivity : AppCompatActivity() {
     private lateinit var binding: SecondActivityBinding
@@ -11,7 +12,7 @@ class SecondActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = SecondActivityBinding.inflate(layoutInflater) //initializing the binding class
         setContentView(binding.root)
-        val profile: Profile = Profile("Карта №7898769", "Специалист","Анастасия", "Антонина", "any.box@gmail.ru",
+        val profile: Profile = Profile(7898769, "Специалист","Анастасия", "Антонина", "any.box@gmail.ru",
             "HIE023UOI88", "Санкт-Петербург")
         loadProfile(profile)
         binding.materialToolbar.setNavigationOnClickListener {
@@ -33,22 +34,22 @@ class SecondActivity : AppCompatActivity() {
 
     private fun loadProfile(profile: Profile) {
         with(binding) {
-            numOfCard.text = profile.numOfCard
+            numOfCard.text = getString(R.string.num_of_card, profile.numOfCard);
             post.text = profile.post
 
-            viewPersonParamName.nameParam.text = getString(com.example.lesson_3_fokin.R.string.name)
+            viewPersonParamName.nameParam.text = getString(R.string.name)
             viewPersonParamName.param.text = profile.name
 
-            viewPersonParamSurname.nameParam.text = getString(com.example.lesson_3_fokin.R.string.surname)
+            viewPersonParamSurname.nameParam.text = getString(R.string.surname)
             viewPersonParamSurname.param.text = profile.surname
 
-            viewPersonParamEmail.nameParam.text = getString(com.example.lesson_3_fokin.R.string.email)
+            viewPersonParamEmail.nameParam.text = getString(R.string.email)
             viewPersonParamEmail.param.text = profile.email
 
-            viewPersonParamLogin.nameParam.text = getString(com.example.lesson_3_fokin.R.string.login)
+            viewPersonParamLogin.nameParam.text = getString(R.string.login)
             viewPersonParamLogin.param.text = profile.login
 
-            viewPersonParamCity.nameParam.text = getString(com.example.lesson_3_fokin.R.string.city)
+            viewPersonParamCity.nameParam.text = getString(R.string.city)
             viewPersonParamCity.param.text = profile.city
             viewPersonParamCity.editButton.visibility = android.view.View.VISIBLE
         }

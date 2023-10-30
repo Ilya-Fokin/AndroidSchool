@@ -20,4 +20,5 @@
     <string name="edit_city_toast">Изменить город</string>
     <string name="content_description_avatar">Avatar</string>
     <string name="content_decription_arrow_back">arrow_back</string>
+    <string name="num_of_card">Карта №%d</string>
 </resources>

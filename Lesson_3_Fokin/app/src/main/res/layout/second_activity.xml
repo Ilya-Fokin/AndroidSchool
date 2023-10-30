@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/material_toolbar"
+            android:id="@+id/materialToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:navigationIcon="@drawable/ic_arrow_back_black_24px"
@@ -41,7 +41,7 @@
                 android:padding="@dimen/default_indent">
 
                 <ImageView
-                    android:id="@+id/img_avatar"
+                    android:id="@+id/imgAvatar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/content_description_avatar"
@@ -58,12 +58,12 @@
                     android:orientation="vertical"
                     android:layout_marginStart="@dimen/default_indent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toRightOf="@id/img_avatar"
+                    app:layout_constraintLeft_toRightOf="@id/imgAvatar"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.6">
 
                     <TextView
-                        android:id="@+id/num_of_card"
+                        android:id="@+id/numOfCard"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/card_number"
@@ -78,7 +78,7 @@
                         android:text="@string/post"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintLeft_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/num_of_card"
+                        app:layout_constraintTop_toBottomOf="@id/numOfCard"
                         style="@style/BaseTextViewStyle.CardProfile"/>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -104,7 +104,7 @@
 
             <TextView
                 style="@style/BaseTextViewStyle.TitleInfo"
-                android:id="@+id/title_list_info"
+                android:id="@+id/titleListInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/title_personal_info"
@@ -112,56 +112,56 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <include
-                android:id="@+id/view_person_param_name"
+                android:id="@+id/viewPersonParamName"
                 layout="@layout/view_person_param"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/title_list_info" />
+                app:layout_constraintTop_toBottomOf="@+id/titleListInfo" />
 
             <include
-                android:id="@+id/view_person_param_surname"
+                android:id="@+id/viewPersonParamSurname"
                 layout="@layout/view_person_param"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_person_param_name" />
+                app:layout_constraintTop_toBottomOf="@+id/viewPersonParamName" />
 
             <include
-                android:id="@+id/view_person_param_email"
+                android:id="@+id/viewPersonParamEmail"
                 layout="@layout/view_person_param"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_person_param_surname" />
+                app:layout_constraintTop_toBottomOf="@+id/viewPersonParamSurname" />
 
             <include
-                android:id="@+id/view_person_param_login"
+                android:id="@+id/viewPersonParamLogin"
                 layout="@layout/view_person_param"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_person_param_email" />
+                app:layout_constraintTop_toBottomOf="@+id/viewPersonParamEmail" />
 
             <include
-                android:id="@+id/view_person_param_city"
+                android:id="@+id/viewPersonParamCity"
                 layout="@layout/view_person_param"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_person_param_login" />
+                app:layout_constraintTop_toBottomOf="@+id/viewPersonParamLogin" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/exit_acc_button"
+        android:id="@+id/exitAccButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?selectableItemBackground"
