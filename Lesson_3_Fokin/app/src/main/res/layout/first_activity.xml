@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".FirstActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:paddingBottom="@dimen/default_indent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/materialToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:navigationIcon="@drawable/ic_arrow_back_black_24px"
+            app:title="@string/title_toolbar"
+            app:titleTextAppearance="@style/BaseTextViewStyle.ToolbarTitle"
+            app:menu="@menu/menu_edit"
+            />
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/default_indent"
+            android:layout_marginEnd="@dimen/default_indent"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:padding="@dimen/default_indent"
+                >
+
+                <ImageView
+                    android:id="@+id/imgAvatar"
+                    android:contentDescription="@string/content_description_avatar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/img_profile_spechialist" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginStart="@dimen/default_indent"
+                    >
+
+                    <TextView
+                        android:id="@+id/numOfCard"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/card_number"
+                        style="@style/BaseTextViewStyle.CardProfile"
+                         />
+
+                    <TextView
+                        android:id="@+id/post"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/post"
+                        style="@style/BaseTextViewStyle.CardProfile" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/default_indent">
+
+            <TextView
+                android:id="@+id/titleListInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:text="@string/title_personal_info"
+                style="@style/BaseTextViewStyle.TitleInfo"/>
+
+            <include
+                layout="@layout/view_person_param"
+                android:id="@+id/viewPersonParamName" />
+
+            <include
+                layout="@layout/view_person_param"
+                android:id="@+id/viewPersonParamSurname"/>
+
+            <include
+                layout="@layout/view_person_param"
+                android:id="@+id/viewPersonParamEmail"/>
+
+            <include
+                layout="@layout/view_person_param"
+                android:id="@+id/viewPersonParamLogin" />
+
+            <include
+                layout="@layout/view_person_param"
+                android:id="@+id/viewPersonParamCity" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/exitAccButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackground"
+        android:padding="@dimen/default_indent"
+        android:stateListAnimator="@null"
+        android:text="@string/log_out_of_your_account"
+        app:icon="@drawable/ic_menu_exit"
+        style="@style/BaseTextViewStyle.ButtonExit"/>
+
+</LinearLayout>

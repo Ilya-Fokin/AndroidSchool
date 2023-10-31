@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Lesson_3_Fokin</string>
+    <string name="back_button">Back</string>
+    <string name="title_toolbar">Личный профиль</string>
+    <string name="edit_button">edit_button</string>
+    <string name="button_text_without_constraintlayout">Без constraintLayout</string>
+    <string name="button_text_with_constraintlayout">С constraintLayout</string>
+    <string name="button_text_with_coordinatorlayout">С collapse toolbar</string>
+    <string name="card_number">Card</string>
+    <string name="post">Post</string>
+    <string name="title_personal_info">Личные данные</string>
+    <string name="log_out_of_your_account">Выйти из аккаунта</string>
+    <string name="name">Имя</string>
+    <string name="surname">Фамилия</string>
+    <string name="email">Email</string>
+    <string name="login">Логин</string>
+    <string name="city">Город</string>
+    <string name="edit_toast">Редактирование</string>
+    <string name="exit_acc_toast">Выход из аккаунта</string>
+    <string name="edit_city_toast">Изменить город</string>
+    <string name="content_description_avatar">Avatar</string>
+    <string name="content_decription_arrow_back">arrow_back</string>
+    <string name="num_of_card">Карта №%d</string>
+</resources>
