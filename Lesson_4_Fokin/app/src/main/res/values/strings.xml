@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Lesson_4_Fokin</string>
+    <string name="toolbar_title">Услуги сантехника</string>
+    <string name="description_image_receipt">Image receipt</string>
+    <string name="detail_in_card_with_p">%s Р</string>
+    <string name="receipt_title">Квитанция</string>
+    <string name="amount_detail">-40 080,55 Р</string>
+    <string name="no">Нет</string>
+    <string name="security">Охрана</string>
+    <string name="alert_dialog">Информационное окно</string>
+    <string name="ok">OK</string>
+    <string name="press_home">Тыкнули домой</string>
+</resources>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="4dp"
+    android:background="?selectableItemBackground"
+    app:cardElevation="2dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:padding="@dimen/default_indent">
+        <ImageView
+            android:id="@+id/imgCardView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/img_receipt"
+            android:contentDescription="@string/description_image_receipt" />
+        <TextView
+            android:id="@+id/titleInfoInCard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_indent"
+            tools:text="@string/receipt_title"
+            style="@style/BaseTextViewStyle.TitleInCard"/>
+        <TextView
+            android:id="@+id/detailInfoInCard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/min_indent"
+            tools:text="@string/amount_detail"
+            style="@style/BaseTextViewStyle.DetailInCard.Grey"/>
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>
