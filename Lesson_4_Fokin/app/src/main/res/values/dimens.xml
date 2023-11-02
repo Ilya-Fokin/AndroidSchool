@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="default_indent">16dp</dimen>
+    <dimen name="cards_indent">8dp</dimen>
+    <dimen name="min_indent">4dp</dimen>
+</resources>
