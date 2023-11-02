@@ -14,9 +14,10 @@ class DetailCardViewHolder(
     private val parent: ViewGroup,
     private val detailListener: DetailCardListener
 ) : RecyclerView.ViewHolder(
-LayoutInflater.from(parent.context).inflate(R.layout.detail_item, parent, false),
+    LayoutInflater.from(parent.context).inflate(R.layout.detail_item, parent, false),
 ) {
     private val binding by viewBinding(DetailItemBinding::bind)
+
     fun bind(item: DetailCard) = with(binding) {
         root.setOnClickListener {
             detailListener.onDetailCardClick(item)
@@ -25,7 +26,7 @@ LayoutInflater.from(parent.context).inflate(R.layout.detail_item, parent, false)
         titleInfoInCard.text = item.title
         if (item.title == "Квитанции" || item.title == "Счётчики") {
             detailInfoInCard.setTextColor(ContextCompat.getColor(root.context, R.color.red))
-        }
-        detailInfoInCard.text = item.detail
+        } else
+            detailInfoInCard.text = item.detail
     }
 }

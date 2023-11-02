@@ -15,6 +15,7 @@ class BaseCardViewHolder(
     LayoutInflater.from(parent.context).inflate(R.layout.base_item, parent, false),
 ) {
     private val binding by viewBinding(BaseItemBinding::bind)
+
     fun bind(item: BaseCard) = with(binding) {
         root.setOnClickListener {
             baseListener.onBaseCardClick(item)
