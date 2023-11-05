@@ -26,6 +26,7 @@ class DetailCardViewHolder(
         titleInfoInCard.text = item.title
         if (item.title == "Квитанции" || item.title == "Счётчики") {
             detailInfoInCard.setTextColor(ContextCompat.getColor(root.context, R.color.red))
+            detailInfoInCard.text = item.detail
         } else
             detailInfoInCard.text = item.detail
     }
