@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Lesson_5_Fokin</string>
+    <string name="go_to_1">Go to 1</string>
+    <string name="go_to_4">Go to 4</string>
+    <string name="go_to_4_again">Go to 4 again</string>
+    <string name="go_to_2">Go to 2</string>
+    <string name="go_to_3">Go to 3</string>
+    <string name="go_to_5">Go to 5</string>
+    <string name="go_to_first_task">Go to first task</string>
+    <string name="go_to_second_task">Go to second task</string>
+    <string name="activity_1">Activity 1</string>
+    <string name="activity_2">Activity 2</string>
+    <string name="activity_3">Activity 3</string>
+    <string name="ok">OK</string>
+    <string name="deliver_result">Deliver result</string>
+    <string name="save">Сохранить</string>
+    <string name="services_title">Услуги</string>
+    <string name="title_scroll">Услуги</string>
+    <string name="all">Все</string>
+    <string name="offer_service">Предложить услугу</string>
+    <string name="description_toolbar">Услуги управляющей компании будут доступны после сдачи дома</string>
+</resources>

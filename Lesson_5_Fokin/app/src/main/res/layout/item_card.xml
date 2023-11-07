@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/imageViewItem"
+        android:layout_width="92dp"
+        android:layout_height="92dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/img_croissant" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="2dp"
+        android:paddingStart="@dimen/default_margins"
+        android:paddingEnd="@dimen/default_margins"
+        android:paddingBottom="2dp"
+        app:layout_constraintStart_toEndOf="@id/imageViewItem"
+        app:layout_constraintEnd_toStartOf="@+id/imageButton"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textViewCompanyName"
+            style="@style/BaseTextViewStyle.CompanyName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Царь пышка" />
+
+        <TextView
+            android:id="@+id/textViewTitle"
+            style="@style/BaseTextViewStyle.Title.ItemCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Скидка 10% на выпечку по коду" />
+
+        <TextView
+            android:id="@+id/textViewAddress"
+            style="@style/BaseTextViewStyle.CompanyName.Address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            tools:text="Лермонтски пр., д.10" />
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_more_item"
+        android:background="?selectableItemBackgroundBorderless"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/linearLayout"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
