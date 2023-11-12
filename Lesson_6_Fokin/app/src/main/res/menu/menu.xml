@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menuButtonItem1"
+        android:icon="@drawable/ic_more"
+        app:showAsAction="never"
+        android:title="@string/g1_item1" />
+    <item
+        android:id="@+id/menuButtonItem2"
+        android:icon="@drawable/ic_more"
+        app:showAsAction="never"
+        android:title="@string/g1_item2" />
+    <item
+        android:id="@+id/menuButtonItem3"
+        android:icon="@drawable/ic_more"
+        app:showAsAction="never"
+        android:title="@string/g1_item3" />
+    <item
+        android:id="@+id/menuButtonItem4"
+        android:icon="@drawable/ic_more"
+        app:showAsAction="never"
+        android:title="@string/g1_item4" />
+    <item
+        android:id="@+id/menuButtonSearch"
+        android:icon="@drawable/ic_search"
+        app:showAsAction="ifRoom"
+        android:title="" />
+
+
+</menu>

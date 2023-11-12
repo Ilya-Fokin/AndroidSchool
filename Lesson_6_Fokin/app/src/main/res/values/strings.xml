@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Lesson_6_Fokin</string>
+    <string name="g1_item1">g1.item1</string>
+    <string name="g1_item2">g1.item2</string>
+    <string name="g1_item3">g1.item3</string>
+    <string name="g1_item4">g1.item4</string>
+    <string name="item_one">Item one</string>
+    <string name="item_two">Item two</string>
+    <string name="item_three">Item three</string>
+    <string name="previous_reading">35</string>
+    <string name="show_banner">Показать баннер</string>
+    <string name="close_banner">Скрыть баннер</string>
+</resources>
