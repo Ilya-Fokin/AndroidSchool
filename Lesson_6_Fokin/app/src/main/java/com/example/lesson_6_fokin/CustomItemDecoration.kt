@@ -15,6 +15,8 @@ class CustomItemDecoration(private val divider: Int) : RecyclerView.ItemDecorati
 
         with(outRect) {
             top = divider
+            left = divider
+            right = divider
         }
     }
 }

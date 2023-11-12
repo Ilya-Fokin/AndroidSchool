@@ -9,4 +9,5 @@
     <string name="item_three">Item three</string>
     <string name="previous_reading">35</string>
     <string name="show_banner">Показать баннер</string>
+    <string name="close_banner">Скрыть баннер</string>
 </resources>

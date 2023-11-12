@@ -5,4 +5,6 @@ class Service(
     val serialNum: Int,
     val input: List<String>,
     val alert: String,
-    val imgResourceId: Int)
+    val imgResourceId: Int,
+    val type: ServiceType
+)
