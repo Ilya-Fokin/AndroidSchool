@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="@dimen/default_margins">
+
+    <TextView
+        android:id="@+id/textViewThis"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/default_margins"
+        android:layout_marginTop="@dimen/default_margins"
+        android:textSize="30sp"
+        tools:text="Lesson_5_Fokin.wcew124"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/goToFourthButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/default_margins"
+        android:text="@string/go_to_4_again"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewThis" />
+
+    <TextView
+        android:id="@+id/textViewActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/default_margins"
+        android:layout_marginTop="@dimen/default_margins"
+        android:textSize="30sp"
+        android:text="@string/activity_1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/currentTimeTextView"
+        app:layout_constraintTop_toBottomOf="@id/goToFourthButton"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/currentTimeTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        tools:text="default text"
+        android:gravity="center"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/goToFourthButton" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
