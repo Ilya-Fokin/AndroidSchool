@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Lesson_7_Fokin</string>
+    <string name="remind_text">НАПОМНИТЬ</string>
+    <string name="divorce">%s - %s</string>
+    <string name="the_most_spb">The most SPB</string>
+    <string name="update_page">Обновить</string>
+</resources>
