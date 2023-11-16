@@ -39,14 +39,14 @@ class BridgesViewHolder(
 
             repeat(this.size) { it ->
                 val currentTimeStr = LocalTime.now().toString()
-                val startTimeStr = this[it].start as String
+                val startTimeStr = this[it].start.orEmpty()
                 times.append("$startTimeStr-")
-                val endTimeStr = this[it].end as String
+                val endTimeStr = this[it].end.orEmpty()
                 times.append("$endTimeStr ")
 
                 val currentTime = LocalTime.parse(LocalTime.now().format(changeFormatTime(currentTimeStr)))
-                val startTime = LocalTime.parse(this[it].start as String, changeFormatTime(startTimeStr))
-                val endTime = LocalTime.parse(this[it].end as String, changeFormatTime(endTimeStr))
+                val startTime = LocalTime.parse(this[it].start.orEmpty(), changeFormatTime(startTimeStr))
+                val endTime = LocalTime.parse(this[it].end.orEmpty(), changeFormatTime(endTimeStr))
 
                 if (currentTime.isAfter(startTime) && currentTime.isBefore(endTime)) {
                     imageViewBridge.setImageResource(R.drawable.ic_brige_late)

@@ -24,7 +24,7 @@ class BridgesFragment : Fragment(R.layout.fragment_bridges) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        loadFragment()
+        loadBridges()
 
         binding.recyclerView.adapter = bridgesAdapter.apply {
             bridgeCardListener = BridgeCardListener {
@@ -34,7 +34,7 @@ class BridgesFragment : Fragment(R.layout.fragment_bridges) {
         }
 
         binding.buttonUpdate.setOnClickListener {
-            loadFragment()
+            loadBridges()
         }
     }
 
@@ -44,7 +44,7 @@ class BridgesFragment : Fragment(R.layout.fragment_bridges) {
         }
     }
 
-    private fun loadFragment() {
+    private fun loadBridges() {
         lifecycleScope.launch {
             binding.progressBar.isVisible = true
             try {

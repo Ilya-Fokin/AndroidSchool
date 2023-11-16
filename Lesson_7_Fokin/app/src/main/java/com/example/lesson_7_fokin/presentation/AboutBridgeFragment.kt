@@ -41,9 +41,9 @@ class AboutBridgeFragment : Fragment(R.layout.fragment_about_bridge) {
         bridge.divorces?.apply {
             var times = StringBuilder()
             repeat(this.size) {
-                val startTimeStr = this[it].start as String
+                val startTimeStr = this[it].start.orEmpty()
                 times.append("$startTimeStr-")
-                val endTimeStr = this[it].end as String
+                val endTimeStr = this[it].end.orEmpty()
                 times.append("$endTimeStr ")
             }
             binding.cardBridge.textViewTime.text = times
