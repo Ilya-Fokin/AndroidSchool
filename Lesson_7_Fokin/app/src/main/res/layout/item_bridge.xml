@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="?selectableItemBackground"
+    android:padding="@dimen/default_intent">
+
+    <ImageView
+        android:id="@+id/imageViewBridge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src = "@drawable/ic_brige_normal"/>
+
+    <TextView
+        android:id="@+id/textViewNameBridge"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/default_intent"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1."
+        app:layout_constraintStart_toEndOf="@id/imageViewBridge"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Александра Невского"/>
+
+    <TextView
+        android:id="@+id/textViewTime"
+        android:layout_width="0dp"
+        android:layout_marginStart="@dimen/default_intent"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2."
+        app:layout_constraintStart_toEndOf="@id/imageViewBridge"
+        app:layout_constraintTop_toBottomOf="@id/textViewNameBridge"
+        tools:text="2:20-5:10"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
