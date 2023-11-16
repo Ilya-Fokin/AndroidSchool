@@ -16,7 +16,8 @@ class Bridge(
     @SerializedName("divorces") val divorces: List<Divorce>?,
     @SerializedName("lat") val lat: String?,
     @SerializedName("lng") val lng: String?,
-    @SerializedName("photo_open_url") var openUrl: String?,
+    @SerializedName("photo_close_url") val closedUrl: String?,
+    @SerializedName("photo_open_url") val openUrl: String?,
     @SerializedName("public") val public: Boolean?,
     var status: StatusBridge = StatusBridge.DIVORCED
 ) : Parcelable

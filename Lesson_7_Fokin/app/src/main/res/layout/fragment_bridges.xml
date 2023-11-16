@@ -14,6 +14,7 @@
         <com.google.android.material.appbar.MaterialToolbar
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:paddingTop="@dimen/default_intent"
             android:background="@color/light_green"
             app:titleTextAppearance="@style/TextAppearance.AppCompat.Title."
             app:title="@string/the_most_spb" />
@@ -31,7 +32,7 @@
         android:layout_height="match_parent"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-        tools:listitem="@layout/card_bridge" />
+        tools:listitem="@layout/item_bridge" />
 
     <LinearLayout
         android:id="@+id/errorLayout"
