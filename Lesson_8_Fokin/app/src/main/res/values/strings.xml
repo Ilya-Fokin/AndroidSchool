@@ -9,5 +9,5 @@
     <string name="empty_note">Заметок нет</string>
     <string name="remove">Удалить</string>
     <string name="set_in_archive">Архивировать</string>
-    <string name="search">Search</string>
+    <string name="search">Поиск</string>
 </resources>

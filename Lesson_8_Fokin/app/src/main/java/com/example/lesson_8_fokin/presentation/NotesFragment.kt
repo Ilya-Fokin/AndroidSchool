@@ -17,16 +17,15 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.lesson_8_fokin.R
 import com.example.lesson_8_fokin.data.DatabaseClient
 import com.example.lesson_8_fokin.data.entity.NoteEntity
-import com.example.lesson_8_fokin.databinding.FragmentFirstBinding
+import com.example.lesson_8_fokin.databinding.FragmentNotesBinding
 import com.example.lesson_8_fokin.model.NoteListener
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 import kotlinx.coroutines.launch
 
+class NotesFragment : Fragment(R.layout.fragment_notes) {
 
-class FirstFragment : Fragment(R.layout.fragment_first) {
-
-    private val binding by viewBinding(FragmentFirstBinding::bind)
+    private val binding by viewBinding(FragmentNotesBinding::bind)
     private val notesAdapter = NoteAdapter()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -50,40 +49,42 @@ class FirstFragment : Fragment(R.layout.fragment_first) {
         )
 
         binding.recyclerView.adapter = notesAdapter.apply {
-            onClickListener = NoteListener {
-                (activity as? NavigationController)?.navigate(SecondFragment.newInstance(it))
-            }
+            onClickListener = object : NoteListener {
 
-            onLongClickListener = NoteListener {
-                val note = it
-                val builder = MaterialAlertDialogBuilder(
-                    requireContext(),
-                    R.style.MaterialAlertDialog_rounded
-                )
-                val customLayout: View = layoutInflater.inflate(R.layout.dialog_menu, null)
+                override fun onClick(item: NoteEntity) {
+                    (activity as? NavigationController)?.navigate(EditNoteFragment.newInstance(item))
+                }
 
-                builder.setView(customLayout)
-                    .setNegativeButton(context?.getText(R.string.cancel)) { dialog, _ ->
+                override fun onLongClick(item: NoteEntity) {
+                    val builder = MaterialAlertDialogBuilder(
+                        requireContext(),
+                        R.style.MaterialAlertDialog_rounded
+                    )
+                    val customLayout: View = layoutInflater.inflate(R.layout.dialog_menu, null)
+
+                    builder.setView(customLayout)
+                        .setNegativeButton(context?.getText(R.string.cancel)) { dialog, _ ->
+                            dialog.cancel()
+                        }
+
+                    val dialog = builder.create()
+                    dialog.show()
+
+                    customLayout.findViewById<Button>(R.id.buttonRemove).setOnClickListener {
+                        deleteNote(item)
                         dialog.cancel()
                     }
 
-                val dialog = builder.create()
-                dialog.show()
-
-                customLayout.findViewById<Button>(R.id.buttonRemove).setOnClickListener {
-                    deleteNote(note)
-                    dialog.cancel()
-                }
-
-                customLayout.findViewById<Button>(R.id.buttonArchive).setOnClickListener {
-                    setInArchiveNote(note)
-                    dialog.cancel()
+                    customLayout.findViewById<Button>(R.id.buttonArchive).setOnClickListener {
+                        setInArchiveNote(item)
+                        dialog.cancel()
+                    }
                 }
             }
         }
 
         binding.fab.setOnClickListener {
-            (activity as? NavigationController)?.navigate(SecondFragment.newInstance(null))
+            (activity as? NavigationController)?.navigate(EditNoteFragment.newInstance(null))
         }
     }
 
@@ -92,6 +93,7 @@ class FirstFragment : Fragment(R.layout.fragment_first) {
             binding.progressBar.isVisible = true
             try {
                 DatabaseClient.noteDao(requireContext()).getNotesFlow().collect { notes ->
+                    binding.textViewError.isVisible = false
                     if (notes.isEmpty()) {
                         notesAdapter.setNotes(listOf())
                         binding.progressBar.isVisible = false
@@ -104,7 +106,8 @@ class FirstFragment : Fragment(R.layout.fragment_first) {
                     }
                 }
             } catch (ex: Exception) {
-                error(ex.message.toString())
+                binding.textViewError.text = ex.message
+                binding.textViewError.isVisible = true
             }
         }
     }
@@ -112,10 +115,10 @@ class FirstFragment : Fragment(R.layout.fragment_first) {
     private fun searchNote(title: String) {
         lifecycleScope.launch {
             binding.progressBar.isVisible = true
-            binding.textViewError.isVisible = false
             try {
                 DatabaseClient.noteDao(requireContext()).searchNotesFlowByName(title)
                     .collect() { notes ->
+                        binding.textViewError.isVisible = false
                         if (notes.isEmpty()) {
                             binding.progressBar.isVisible = false
                             binding.textViewError.text =
@@ -127,7 +130,8 @@ class FirstFragment : Fragment(R.layout.fragment_first) {
                         }
                     }
             } catch (ex: Exception) {
-                error(ex.message.toString())
+                binding.textViewError.text = ex.message
+                binding.textViewError.isVisible = true
             }
         }
     }
@@ -137,7 +141,8 @@ class FirstFragment : Fragment(R.layout.fragment_first) {
             try {
                 DatabaseClient.noteDao(requireContext()).deleteById(note.id)
             } catch (ex: Exception) {
-                error(ex.message.toString())
+                binding.textViewError.text = ex.message
+                binding.textViewError.isVisible = true
             }
         }
     }
@@ -147,7 +152,8 @@ class FirstFragment : Fragment(R.layout.fragment_first) {
             try {
                 DatabaseClient.noteDao(requireContext()).addInArchive(note.id)
             } catch (ex: Exception) {
-                error(ex.message.toString())
+                binding.textViewError.text = ex.message
+                binding.textViewError.isVisible = true
             }
         }
     }
@@ -176,9 +182,33 @@ class FirstFragment : Fragment(R.layout.fragment_first) {
         })
     }
 
+    fun searchMenu() {
+        requireActivity().menuInflater.inflate(R.menu.menu_search, binding.toolbar.menu)
+        val menuItem = binding.toolbar.menu.findItem(R.id.action_search)
+        val searchView = menuItem.actionView as SearchView
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                notesAdapter.setNotes(listOf())
+                if (!searchView.isIconified) {
+                    searchView.isIconified = true
+                }
+                searchNote(query)
+                menuItem.collapseActionView()
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                notesAdapter.setNotes(listOf())
+                searchNote(newText.toString())
+                return false
+            }
+        })
+    }
+
     companion object {
-        fun newInstance(): FirstFragment {
-            return FirstFragment()
+        fun newInstance(): NotesFragment {
+            return NotesFragment()
         }
     }
 }

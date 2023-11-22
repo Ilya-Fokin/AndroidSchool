@@ -4,18 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?selectableItemBackground"
     app:cardCornerRadius="8dp"
-    app:cardElevation="4dp"
-    android:background="?selectableItemBackground">
+    app:cardElevation="4dp">
 
     <LinearLayout
         android:id="@+id/linearLayoutCard"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="@dimen/default_margin"
         android:background="@color/white"
-        >
+        android:orientation="vertical"
+        android:padding="@dimen/default_margin">
 
         <TextView
             android:id="@+id/textViewTitle"
@@ -23,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body1.Title."
-            tools:text="Купить батон"/>
+            tools:text="Купить батон" />
 
         <TextView
             android:id="@+id/textViewDescription"
@@ -31,7 +30,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body2.Description."
             tools:text="Hey let’s catch up soon. Do you want
-to grab lunch sometime this weekend? Let me know when you’re free!"/>
+to grab lunch sometime this weekend? Let me know when you’re free!" />
 
     </LinearLayout>
 

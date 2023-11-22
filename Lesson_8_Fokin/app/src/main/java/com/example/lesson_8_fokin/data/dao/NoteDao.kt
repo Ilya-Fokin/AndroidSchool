@@ -16,7 +16,7 @@ interface NoteDao {
     @Query("select * from ${NoteEntity.TABLE_NAME} where inArchive = 0")
     fun getNotesFlow(): Flow<List<NoteEntity>>
 
-    @Query("select * from ${NoteEntity.TABLE_NAME} where title like '%' || :str || '%' or description like '%' || :str || '%' and inArchive = 0")
+    @Query("select * from ${NoteEntity.TABLE_NAME} where title like '%' || :str || '%' and inArchive = 0 or description like '%' || :str || '%' and inArchive = 0")
     fun searchNotesFlowByName(str: String): Flow<List<NoteEntity>>
 
     @Query("update ${NoteEntity.TABLE_NAME} set inArchive = 1 where id = :id")

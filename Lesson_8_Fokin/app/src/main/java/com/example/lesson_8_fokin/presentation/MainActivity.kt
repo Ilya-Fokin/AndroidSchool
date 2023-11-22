@@ -11,7 +11,7 @@ class MainActivity : AppCompatActivity(), NavigationController {
         setContentView(R.layout.activity_main)
 
         supportFragmentManager.beginTransaction()
-            .add(R.id.fragmentLayout, FirstFragment.newInstance())
+            .add(R.id.fragmentLayout, NotesFragment.newInstance())
             .commit()
     }
 
@@ -20,5 +20,9 @@ class MainActivity : AppCompatActivity(), NavigationController {
             .replace(R.id.fragmentLayout, fragment)
             .addToBackStack(null)
             .commit()
+    }
+
+    override fun back() {
+        supportFragmentManager.popBackStack()
     }
 }

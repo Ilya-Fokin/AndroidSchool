@@ -30,8 +30,7 @@ class SelectorColorViewHolder(
         selectorColor.setBackgroundResource(item.color)
         when (item.status) {
             SelectorStatus.CHECKED -> selectorColor.setImageResource(R.drawable.checked)
-            SelectorStatus.UNCHECKED -> selectorColor.setImageResource(R.drawable.unchecked)
+            SelectorStatus.UNCHECKED -> selectorColor.setImageResource(0)
         }
-
     }
 }

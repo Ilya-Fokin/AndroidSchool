@@ -9,7 +9,6 @@ import com.example.lesson_8_fokin.model.SelectorColor
 import com.example.lesson_8_fokin.model.SelectorColorListener
 import com.example.lesson_8_fokin.model.SelectorStatus
 
-
 class SelectorColorAdapter : RecyclerView.Adapter<SelectorColorViewHolder>() {
 
     lateinit var selectorColorListener: SelectorColorListener

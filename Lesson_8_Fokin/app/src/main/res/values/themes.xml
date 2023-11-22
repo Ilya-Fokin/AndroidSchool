@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.Lesson_8_Fokin" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Base.Theme.Lesson_8_Fokin" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/orange</item>
         <item name="colorPrimaryDark">@color/dark_orange_variant</item>
         <item name="android:textColorPrimary">@color/white</item>

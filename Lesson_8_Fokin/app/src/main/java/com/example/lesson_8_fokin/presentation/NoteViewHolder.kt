@@ -15,7 +15,6 @@ import com.example.lesson_8_fokin.model.NoteListener
 class NoteViewHolder(
     private val parent: ViewGroup,
     private val onClickListener: NoteListener,
-    private val onLongClickListener: NoteListener
 ) : RecyclerView.ViewHolder(
     LayoutInflater.from(parent.context).inflate(R.layout.item_note, parent, false)
 ) {
@@ -26,7 +25,7 @@ class NoteViewHolder(
             onClickListener.onClick(item)
         }
         root.setOnLongClickListener {
-            onLongClickListener.onClick(item)
+            onClickListener.onLongClick(item)
             true
         }
         if (item.color == R.color.white) {

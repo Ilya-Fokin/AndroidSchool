@@ -1,27 +1,16 @@
 package com.example.lesson_8_fokin.presentation
 
-import android.app.AlertDialog
-import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.Button
-import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.lesson_8_fokin.R
 import com.example.lesson_8_fokin.data.DatabaseClient
 import com.example.lesson_8_fokin.data.entity.NoteEntity
-import com.example.lesson_8_fokin.databinding.DialogColorsBinding
-import com.example.lesson_8_fokin.databinding.FragmentSecondBinding
+import com.example.lesson_8_fokin.databinding.FragmentEditNoteBinding
 import com.example.lesson_8_fokin.model.SelectorColor
 import com.example.lesson_8_fokin.model.SelectorColorListener
 import com.example.lesson_8_fokin.model.SelectorStatus
@@ -29,19 +18,15 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.UUID
-import java.util.zip.Inflater
 
+class EditNoteFragment : Fragment(R.layout.fragment_edit_note) {
 
-class SecondFragment : Fragment(R.layout.fragment_second) {
-
-    private val binding by viewBinding(FragmentSecondBinding::bind)
+    private val binding by viewBinding(FragmentEditNoteBinding::bind)
     private val selectorAdapter = SelectorColorAdapter()
+    private var selectorColor = SelectorColor(R.color.white, SelectorStatus.CHECKED)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        var selectorColor = SelectorColor(R.color.white, SelectorStatus.CHECKED)
 
         var note = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             arguments?.getParcelable(NOTE_KEY, NoteEntity::class.java)
@@ -71,64 +56,10 @@ class SecondFragment : Fragment(R.layout.fragment_second) {
                 note.color = selectorColor.color
                 updateNote(note)
             }
-            parentFragmentManager.popBackStack()
+            (activity as? NavigationController)?.back()
         }
 
-        binding.toolbar.menu.findItem(R.id.menuSelectColor).setOnMenuItemClickListener {
-            val builder =
-                MaterialAlertDialogBuilder(requireContext(), R.style.MaterialAlertDialog_rounded)
-            val customLayout: View = layoutInflater.inflate(R.layout.dialog_colors, null)
-
-            builder.setTitle(context?.getText(R.string.color_selection))
-            builder.setView(customLayout)
-                .setNegativeButton(context?.getText(R.string.cancel)) { dialog, _ ->
-                    dialog.cancel()
-                }
-
-            val layoutManager = GridLayoutManager(this.context, 4)
-            val recyclerView = customLayout.findViewById<RecyclerView>(R.id.recyclerView)
-
-            recyclerView.addItemDecoration(
-                GridItemDecoration(
-                    4,
-                    resources.getDimensionPixelSize(R.dimen.default_card_indent),
-                    true
-                )
-            )
-
-            recyclerView.layoutManager = layoutManager
-            loadColors(selectorColor.color)
-
-            val dialog = builder.create()
-
-            recyclerView.adapter = selectorAdapter.apply {
-                selectorColorListener = SelectorColorListener {
-                    val index1 = getPositionItem(selectorColor.color)
-                    val index2: Int
-
-                    selectorColor = if (selectorColor.color == it.color) {
-                        removeSelector()
-                        selectorAdapter.notifyItemChanged(index1)
-                        SelectorColor(R.color.white, SelectorStatus.CHECKED)
-                    } else if (selectorColor.color != R.color.white) {
-                        replaceSelector(it.color)
-                        selectorAdapter.notifyItemChanged(index1)
-                        index2 = getPositionItem(it.color)
-                        selectorAdapter.notifyItemChanged(index2)
-                        SelectorColor(it.color, SelectorStatus.CHECKED)
-                    } else {
-                        replaceSelector(it.color)
-                        index2 = getPositionItem(it.color)
-                        selectorAdapter.notifyItemChanged(index2)
-                        SelectorColor(it.color, SelectorStatus.CHECKED)
-                    }
-                    dialog.cancel()
-                }
-            }
-            dialog.show()
-
-            true
-        }
+        showColorPickerDialog()
     }
 
     private fun saveNote(note: NoteEntity) {
@@ -167,7 +98,7 @@ class SecondFragment : Fragment(R.layout.fragment_second) {
         }
     }
 
-    private fun loadColors(color: Int) {
+    private fun setColors(color: Int) {
         val colors = mutableListOf(
             SelectorColor(R.color.red, SelectorStatus.UNCHECKED),
             SelectorColor(R.color.crimson, SelectorStatus.UNCHECKED),
@@ -192,11 +123,68 @@ class SecondFragment : Fragment(R.layout.fragment_second) {
         selectorAdapter.setSelectors(colors)
     }
 
+    private fun showColorPickerDialog() {
+        binding.toolbar.menu.findItem(R.id.menuSelectColor).setOnMenuItemClickListener {
+            val builder =
+                MaterialAlertDialogBuilder(requireContext(), R.style.MaterialAlertDialog_rounded)
+            val customLayout: View = layoutInflater.inflate(R.layout.dialog_colors, null)
+
+            builder.setTitle(context?.getText(R.string.color_selection))
+            builder.setView(customLayout)
+                .setNegativeButton(context?.getText(R.string.cancel)) { dialog, _ ->
+                    dialog.cancel()
+                }
+
+            val layoutManager = GridLayoutManager(this.context, 4)
+            val recyclerView = customLayout.findViewById<RecyclerView>(R.id.recyclerView)
+
+            recyclerView.addItemDecoration(
+                GridItemDecoration(
+                    4,
+                    resources.getDimensionPixelSize(R.dimen.default_card_indent),
+                    true
+                )
+            )
+
+            recyclerView.layoutManager = layoutManager
+            setColors(selectorColor.color)
+
+            val dialog = builder.create()
+
+            recyclerView.adapter = selectorAdapter.apply {
+                selectorColorListener = SelectorColorListener {
+                    val index1 = getPositionItem(selectorColor.color)
+                    val index2: Int
+
+                    selectorColor = if (selectorColor.color == it.color) {
+                        removeSelector()
+                        selectorAdapter.notifyItemChanged(index1)
+                        SelectorColor(R.color.white, SelectorStatus.CHECKED)
+                    } else if (selectorColor.color != R.color.white) {
+                        replaceSelector(it.color)
+                        selectorAdapter.notifyItemChanged(index1)
+                        index2 = getPositionItem(it.color)
+                        selectorAdapter.notifyItemChanged(index2)
+                        SelectorColor(it.color, SelectorStatus.CHECKED)
+                    } else {
+                        replaceSelector(it.color)
+                        index2 = getPositionItem(it.color)
+                        selectorAdapter.notifyItemChanged(index2)
+                        SelectorColor(it.color, SelectorStatus.CHECKED)
+                    }
+                    dialog.cancel()
+                }
+            }
+            dialog.show()
+            true
+        }
+    }
+
     companion object {
         private const val NOTE_KEY = "note_key"
 
-        fun newInstance(note: NoteEntity?): SecondFragment {
-            return SecondFragment().also {
+        fun newInstance(note: NoteEntity?): EditNoteFragment {
+            return EditNoteFragment().also {
                 it.arguments = Bundle().apply {
                     putParcelable(NOTE_KEY, note)
                 }

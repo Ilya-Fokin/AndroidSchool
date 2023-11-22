@@ -45,6 +45,7 @@
         android:id="@+id/editTextNote"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:gravity="top"
         android:hint="@string/text_of_the_note"
         android:layout_marginStart="@dimen/default_margin"
         android:layout_marginEnd="@dimen/default_margin"
@@ -53,6 +54,7 @@
         android:autofillHints=""
         app:layout_constraintTop_toBottomOf="@id/editTextTitle"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
