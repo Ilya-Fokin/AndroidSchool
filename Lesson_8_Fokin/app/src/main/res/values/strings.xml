@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Lesson_8_Fokin</string>
+    <string name="notes">Заметки</string>
+    <string name="fab">fab</string>
+    <string name="title">Название</string>
+    <string name="text_of_the_note">Текст заметки</string>
+    <string name="color_selection">Выбор цвета</string>
+    <string name="cancel">Отмена</string>
+    <string name="empty_note">Заметок нет</string>
+    <string name="remove">Удалить</string>
+    <string name="set_in_archive">Архивировать</string>
+    <string name="search">Search</string>
+</resources>
