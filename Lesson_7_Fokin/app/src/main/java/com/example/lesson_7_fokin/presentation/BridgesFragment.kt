@@ -14,12 +14,19 @@ import com.example.lesson_7_fokin.R
 import com.example.lesson_7_fokin.data.ApiClient
 import com.example.lesson_7_fokin.data.model.BridgeCardListener
 import com.example.lesson_7_fokin.databinding.FragmentBridgesBinding
+
+import kotlinx.coroutines.Job
+
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class BridgesFragment : Fragment(R.layout.fragment_bridges) {
     private val binding by viewBinding(FragmentBridgesBinding::bind)
     private val bridgesAdapter = BridgesAdapter()
+
+
+    private var loadingJob: Job? = null
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -38,6 +45,14 @@ class BridgesFragment : Fragment(R.layout.fragment_bridges) {
         }
     }
 
+
+    override fun onDestroyView() {
+        loadingJob?.cancel()
+        loadingJob = null
+        super.onDestroyView()
+    }
+
+
     companion object {
         fun newInstance(): BridgesFragment {
             return BridgesFragment()
@@ -45,10 +60,13 @@ class BridgesFragment : Fragment(R.layout.fragment_bridges) {
     }
 
     private fun loadBridges() {
-        lifecycleScope.launch {
+
+        viewLifecycleOwner.lifecycleScope.launch {
             binding.progressBar.isVisible = true
             try {
                 val bridges = ApiClient.apiService.getBridges()
+                delay(2000)
+
                 if (bridges.isEmpty()) {
                     binding.progressBar.isVisible = false
                     binding.errorMessage.text = "Тут пусто"
