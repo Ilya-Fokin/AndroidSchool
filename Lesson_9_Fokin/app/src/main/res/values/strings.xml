@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Lesson_9_Fokin</string>
+    <string name="update">Обновить</string>
+    <string name="weather_name">%s</string>
+    <string name="temp">%s\u2103</string>
+    <string name="max_min_temp">Max.: %s\u2103 Min.: %s\u2103</string>
+    <string name="speed_wind">Wind speed %s m/sec</string>
+    <string name="cloudy">Cloudy %1$s%%</string>
+    <string name="main">%s</string>
+    <string name="error">%s</string>
+    <string name="download_file">Скачать файл</string>
+    <string name="download_error">Download error</string>
+    <string name="restart_download">Попробовать снова</string>
+    <string name="download_info">Идет скачивание</string>
+    <string name="download_file_description">download file</string>
+    <string name="unzip">Разархивация...</string>
+    <string name="donload_file_process">Идет скачивание файла</string>
+</resources>
