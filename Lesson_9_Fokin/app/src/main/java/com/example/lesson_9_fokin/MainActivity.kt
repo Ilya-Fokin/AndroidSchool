@@ -138,7 +138,7 @@ class MainActivity : AppCompatActivity(), ServiceCallback {
         binding.layoutWeatherResult.isVisible = true
         if (weather.name == null) {
             binding.layoutWeatherResult.isVisible = false
-            binding.textViewError.text = resources.getString(R.string.error, "Нет данных")
+            binding.textViewError.text = resources.getString(R.string.empty_data)
         } else {
             binding.textViewWeatherName.text =
                 resources.getString(R.string.weather_name, weather.name)

@@ -7,6 +7,7 @@
     <string name="speed_wind">Wind speed %s m/sec</string>
     <string name="cloudy">Cloudy %1$s%%</string>
     <string name="main">%s</string>
+    <string name="empty_data">Нет данных</string>
     <string name="error">%s</string>
     <string name="download_file">Скачать файл</string>
     <string name="download_error">Download error</string>

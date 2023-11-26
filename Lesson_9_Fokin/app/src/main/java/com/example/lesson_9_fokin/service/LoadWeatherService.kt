@@ -9,6 +9,7 @@ import androidx.core.view.isVisible
 import com.example.lesson_9_fokin.data.ApiClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -16,8 +17,14 @@ class LoadWeatherService : Service() {
 
     var serviceCallback: ServiceCallback? = null
 
+    private val serviceScope = CoroutineScope(Dispatchers.Main)
+
     override fun onBind(intent: Intent?): IBinder {
-        CoroutineScope(Dispatchers.Main).launch {
+        return MyBinder()
+    }
+
+    override fun onCreate() {
+        serviceScope.launch {
             while (true) {
                 try {
                     val weatherResult = ApiClient.apiService.getWeather(QUERY, APP_ID)
@@ -29,12 +36,17 @@ class LoadWeatherService : Service() {
                 delay(60000)
             }
         }
-        return MyBinder()
+        super.onCreate()
     }
 
     override fun onUnbind(intent: Intent?): Boolean {
         serviceCallback = null
         return super.onUnbind(intent)
+    }
+
+    override fun onDestroy() {
+        serviceScope.cancel()
+        super.onDestroy()
     }
 
     inner class MyBinder : Binder() {

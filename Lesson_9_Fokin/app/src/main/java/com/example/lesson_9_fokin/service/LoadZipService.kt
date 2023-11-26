@@ -78,46 +78,44 @@ class LoadZipService : Service() {
     }
 
     private fun unZip() {
-        CoroutineScope(Dispatchers.IO).launch {
-            val path1 = "${applicationContext.filesDir}/$newFile"
-            val path2 = "${applicationContext.filesDir}"
-            var fileName = ""
+        val path1 = "${applicationContext.filesDir}/$newFile"
+        val path2 = "${applicationContext.filesDir}"
+        var fileName = ""
 
-            try {
-                val zipFile = File(path1)
-                val outputDir = File(path2)
+        try {
+            val zipFile = File(path1)
+            val outputDir = File(path2)
 
-                ZipFile(zipFile).use { zip ->
-                    zip.entries().asSequence().forEach { entry ->
-                        zip.getInputStream(entry).use { input ->
-                            if (entry.isDirectory) {
-                                val d = File(outputDir, entry.name)
-                                if (!d.exists()) d.mkdirs()
-                            } else {
-                                val f = File(outputDir, entry.name)
-                                fileName = f.name
-                                if (f.parentFile?.exists() != true) f.parentFile?.mkdirs()
+            ZipFile(zipFile).use { zip ->
+                zip.entries().asSequence().forEach { entry ->
+                    zip.getInputStream(entry).use { input ->
+                        if (entry.isDirectory) {
+                            val d = File(outputDir, entry.name)
+                            if (!d.exists()) d.mkdirs()
+                        } else {
+                            val f = File(outputDir, entry.name)
+                            fileName = f.name
+                            if (f.parentFile?.exists() != true) f.parentFile?.mkdirs()
 
-                                f.outputStream().use { output ->
-                                    input.copyTo(output)
-                                }
+                            f.outputStream().use { output ->
+                                input.copyTo(output)
                             }
                         }
                     }
                 }
-                zipFile.delete()
-
-                val intent = Intent(MainActivity.STATUS_RECEIVER_ACTION).apply {
-                    putExtra(KEY_COMPLETE, 1)
-                    putExtra(KEY_PATH, "$path2/$fileName")
-                }
-                sendBroadcast(intent)
-            } catch (ex: Exception) {
-                val intent = Intent(MainActivity.STATUS_RECEIVER_ACTION).apply {
-                    putExtra(KEY_ERROR, ex.message.toString())
-                }
-                sendBroadcast(intent)
             }
+            zipFile.delete()
+
+            val intent = Intent(MainActivity.STATUS_RECEIVER_ACTION).apply {
+                putExtra(KEY_COMPLETE, 1)
+                putExtra(KEY_PATH, "$path2/$fileName")
+            }
+            sendBroadcast(intent)
+        } catch (ex: Exception) {
+            val intent = Intent(MainActivity.STATUS_RECEIVER_ACTION).apply {
+                putExtra(KEY_ERROR, ex.message.toString())
+            }
+            sendBroadcast(intent)
         }
     }
 
