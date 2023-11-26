@@ -24,6 +24,7 @@ class LoadWeatherService : Service() {
     }
 
     override fun onCreate() {
+        super.onCreate()
         serviceScope.launch {
             while (true) {
                 try {
@@ -36,7 +37,6 @@ class LoadWeatherService : Service() {
                 delay(60000)
             }
         }
-        super.onCreate()
     }
 
     override fun onUnbind(intent: Intent?): Boolean {
