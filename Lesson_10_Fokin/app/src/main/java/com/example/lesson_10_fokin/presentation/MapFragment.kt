@@ -173,8 +173,12 @@ class MapFragment : Fragment(R.layout.fragment_map) {
 
     override fun onStop() {
         MapKitFactory.getInstance().onStop()
-        fusedLocationClient.removeLocationUpdates(locationCallback)
         super.onStop()
+    }
+
+    override fun onPause() {
+        fusedLocationClient.removeLocationUpdates(locationCallback)
+        super.onPause()
     }
 
     override fun onResume() {
