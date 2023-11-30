@@ -44,6 +44,7 @@
             android:background="?selectableItemBackground"
             android:backgroundTint="@color/white"
             android:visibility="gone"
+            app:cardCornerRadius="0dp"
             app:cardElevation="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

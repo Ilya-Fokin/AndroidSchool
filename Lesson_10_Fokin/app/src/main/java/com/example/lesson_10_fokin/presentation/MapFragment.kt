@@ -8,6 +8,7 @@ import android.graphics.PointF
 import android.location.Location
 import android.os.Bundle
 import android.os.Looper
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -15,10 +16,12 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.lesson_10_fokin.R
 import com.example.lesson_10_fokin.data.ApiClient
+import com.example.lesson_10_fokin.data.LoadState
 import com.example.lesson_10_fokin.data.MapBridgeMapper
 import com.example.lesson_10_fokin.data.model.Bridge
 import com.example.lesson_10_fokin.data.model.MapBridge
@@ -44,6 +47,7 @@ import com.yandex.runtime.image.ImageProvider
 import kotlinx.coroutines.launch
 import com.yandex.mapkit.map.Map
 import com.yandex.mapkit.map.MapObjectTapListener
+import com.yandex.mapkit.map.internal.ClusterizedPlacemarkCollectionBinding
 import java.lang.StringBuilder
 
 private const val YANDEX_ZOOM_REDUCTION_COEFFICIENT = 0.8f
@@ -68,6 +72,16 @@ class MapFragment : Fragment(R.layout.fragment_map) {
 
     private var lastLocation: Location? = null
 
+    private val viewModel: BridgeViewModel by viewModels()
+
+    private val clusterListener = ClusterListener { cluster ->
+        mapPinViewBinding.textViewName.text = cluster.size.toString()
+        cluster.addClusterTapListener(clusterObjectsTapListener)
+        cluster.appearance.setIcon(
+            ImageProvider.fromBitmap(mapPinViewBinding.root.toBitmap(mapPinSize))
+        )
+    }
+
     private val locationCallback = object : LocationCallback() {
         override fun onLocationResult(p0: LocationResult) {
             for (location in p0.locations) {
@@ -81,7 +95,7 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         ActivityResultContracts.RequestMultiplePermissions()
     ) { permissions ->
         if (permissions.values.contains(true)) {
-            startLocation()
+            updateLocation()
         }
     }
 
@@ -111,57 +125,36 @@ class MapFragment : Fragment(R.layout.fragment_map) {
             }
         }
 
-        val boundingBoxCameraPosition = binding.mapView.mapWindow.map.cameraPosition(
-            Geometry.fromBoundingBox(boundingBoxBuilder.build()),
-            0f,
-            0f,
-            binding.mapView.mapWindow.focusRect
-        )
-
-        val targetCameraPosition = CameraPosition(
-            boundingBoxCameraPosition.target,
-            boundingBoxCameraPosition.zoom - YANDEX_ZOOM_REDUCTION_COEFFICIENT,
-            boundingBoxCameraPosition.azimuth,
-            boundingBoxCameraPosition.tilt,
-        )
-        binding.mapView.mapWindow.map.move(targetCameraPosition)
+        moveOnCluster(boundingBoxBuilder)
         true
-    }
-
-    private val loadCallback = object : BridgeLoadCallback {
-        override fun onSuccess(bridges: List<Bridge>) {
-            binding.progressBar.isVisible = false
-            mapBridges = MapBridgeMapper.toBridge(bridges)
-
-            mapBridges?.forEach { bridge ->
-                collection?.addPlacemark()?.apply {
-                    geometry = bridge.point
-                    setIcon(
-                        ImageProvider.fromResource(context, bridge.iconId)
-                    )
-                    setIconStyle(IconStyle().apply {
-                        anchor = PointF(0.5f, 1f)
-                    })
-                    addTapListener(mapObjectTapListener)
-                    mapObjects[this] = bridge
-                }
-            }
-            collection?.clusterPlacemarks(45.0, 20)
-            binding.frameLayoutMap.isVisible = true
-        }
-
-        override fun onError(error: Throwable) {
-            binding.progressBar.isVisible = false
-            binding.frameLayoutMap.isVisible = false
-            binding.textViewError.text = error.message
-            binding.layoutError.isVisible = true
-        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         MapKitFactory.initialize(context)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+        viewModel.loadBridges()
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        bridgeLiveDataObserve()
+
+        collection = binding.mapView.mapWindow.map.mapObjects
+            .addClusterizedPlacemarkCollection(clusterListener)
+
+        binding.mapView.mapWindow.map.addInputListener(inputListener)
+
+        binding.buttonOnLocation.setOnClickListener {
+            lastLocation?.let { it1 -> moveOnLocation(it1) }
+        }
+
+        binding.materialButtonRepeat.setOnClickListener {
+            binding.layoutError.isVisible = false
+            bridgeLiveDataObserve()
+        }
+
     }
 
     override fun onStart() {
@@ -171,9 +164,9 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         startLocation()
     }
 
-    override fun onStop() {
-        MapKitFactory.getInstance().onStop()
-        super.onStop()
+    override fun onResume() {
+        super.onResume()
+        updateLocation()
     }
 
     override fun onPause() {
@@ -181,50 +174,27 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         super.onPause()
     }
 
-    override fun onResume() {
-        super.onResume()
-        updateLocation()
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        loadBridges()
-        collection = binding.mapView.mapWindow.map.mapObjects
-            .addClusterizedPlacemarkCollection(clusterListener)
-        binding.mapView.mapWindow.map.addInputListener(inputListener)
-
-        binding.buttonOnLocation.setOnClickListener {
-            lastLocation?.let { it1 -> moveOnLocation(it1) }
-        }
-
-        binding.materialButtonRepeat.setOnClickListener {
-            binding.layoutError.isVisible = false
-            loadBridges()
-        }
+    override fun onStop() {
+        MapKitFactory.getInstance().onStop()
+        super.onStop()
     }
 
     private fun updateLocation() {
         if (ActivityCompat.checkSelfPermission(
                 requireContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+            ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
                 requireContext(),
                 Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
+            ) == PackageManager.PERMISSION_GRANTED
         ) {
-            permissionLauncher.launch(
-                arrayOf(
-                    Manifest.permission.ACCESS_COARSE_LOCATION,
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                )
+            binding.buttonOnLocation.isVisible = true
+            fusedLocationClient.requestLocationUpdates(
+                locationRequest,
+                locationCallback,
+                Looper.getMainLooper()
             )
-            return
         }
-        fusedLocationClient.requestLocationUpdates(
-            locationRequest,
-            locationCallback,
-            Looper.getMainLooper()
-        )
     }
 
     private fun startLocation() {
@@ -242,15 +212,14 @@ class MapFragment : Fragment(R.layout.fragment_map) {
                     Manifest.permission.ACCESS_FINE_LOCATION,
                 )
             )
-            return
+        } else {
+            binding.buttonOnLocation.isVisible = true
+            fusedLocationClient.lastLocation
+                .addOnSuccessListener { location ->
+                    lastLocation = location
+                    setStartLocationPlacemark(location)
+                }
         }
-        binding.buttonOnLocation.isVisible = true
-        fusedLocationClient.lastLocation
-            .addOnSuccessListener { location ->
-                lastLocation = location
-                setStartLocationPlacemark(location)
-            }
-
     }
 
     private fun setStartLocationPlacemark(location: Location) {
@@ -263,7 +232,6 @@ class MapFragment : Fragment(R.layout.fragment_map) {
                 anchor = PointF(0.5f, 1f)
             })
         }
-        moveOnLocation(location)
     }
 
     private fun updateLocationPlacemark(location: Location) {
@@ -276,14 +244,6 @@ class MapFragment : Fragment(R.layout.fragment_map) {
                 anchor = PointF(0.5f, 1f)
             })
         }
-    }
-
-    private val clusterListener = ClusterListener { cluster ->
-        mapPinViewBinding.textViewName.text = cluster.size.toString()
-        cluster.addClusterTapListener(clusterObjectsTapListener)
-        cluster.appearance.setIcon(
-            ImageProvider.fromBitmap(mapPinViewBinding.root.toBitmap(mapPinSize))
-        )
     }
 
     private fun showItemBridge(bridge: MapBridge) {
@@ -313,6 +273,23 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         )
     }
 
+    private fun moveOnCluster(boundingBoxBuilder: BoundingBoxBuilder) {
+        val boundingBoxCameraPosition = binding.mapView.mapWindow.map.cameraPosition(
+            Geometry.fromBoundingBox(boundingBoxBuilder.build()),
+            0f,
+            0f,
+            binding.mapView.mapWindow.focusRect
+        )
+
+        val targetCameraPosition = CameraPosition(
+            boundingBoxCameraPosition.target,
+            boundingBoxCameraPosition.zoom - YANDEX_ZOOM_REDUCTION_COEFFICIENT,
+            boundingBoxCameraPosition.azimuth,
+            boundingBoxCameraPosition.tilt,
+        )
+        binding.mapView.mapWindow.map.move(targetCameraPosition)
+    }
+
     private fun createBitmapFromVector(art: Int): Bitmap? {
         val drawable = ContextCompat.getDrawable(requireContext(), art) ?: return null
         val bitmap = Bitmap.createBitmap(
@@ -326,19 +303,47 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         return bitmap
     }
 
-    private fun loadBridges() {
-        lifecycleScope.launch {
-            binding.progressBar.isVisible = true
-            binding.frameLayoutMap.isVisible = false
-            try {
-                val bridges = ApiClient.apiService.getBridges()
-                loadCallback.onSuccess(bridges)
-            } catch (e: Exception) {
-                loadCallback.onError(e)
-            } finally {
-                binding.progressBar.isVisible = false
+    private fun bridgeLiveDataObserve() {
+        viewModel.bridgeLiveData.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is LoadState.Loading -> {
+                    binding.progressBar.isVisible = true
+                }
+
+                is LoadState.Data -> {
+                    binding.progressBar.isVisible = false
+                    mapBridges = MapBridgeMapper.toBridge(state.data)
+
+                    mapBridges?.forEach { bridge ->
+                        collection?.addPlacemark()?.apply {
+                            geometry = bridge.point
+                            setIcon(
+                                ImageProvider.fromResource(context, bridge.iconId)
+                            )
+                            setIconStyle(IconStyle().apply {
+                                anchor = PointF(0.5f, 1f)
+                            })
+                            addTapListener(mapObjectTapListener)
+                            mapObjects[this] = bridge
+                        }
+                    }
+                    collection?.clusterPlacemarks(45.0, 20)
+                    binding.frameLayoutMap.isVisible = true
+
+                    moveOnCluster(BoundingBoxBuilder().apply {
+                        mapObjects.values.forEach { mapBridge ->
+                            include(mapBridge.point)
+                        }
+                    })
+                }
+
+                is LoadState.Error -> {
+                    binding.progressBar.isVisible = false
+                    binding.frameLayoutMap.isVisible = false
+                    binding.textViewError.text = state.toString()
+                    binding.layoutError.isVisible = true
+                }
             }
         }
     }
-
 }
