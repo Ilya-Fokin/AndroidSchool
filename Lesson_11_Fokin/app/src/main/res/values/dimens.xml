@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="column_width">4dp</dimen>
+    <dimen name="column_text_size">12sp</dimen>
+    <dimen name="column_corner_radius">2dp</dimen>
+    <dimen name="column_line_margin">16dp</dimen>
+    <dimen name="column_default_height">8dp</dimen>
+    <dimen name="desired_height">250dp</dimen>
+</resources>

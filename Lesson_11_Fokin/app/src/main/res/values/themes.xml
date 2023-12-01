@@ -1,0 +1,8 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.Lesson_11_Fokin" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimaryDark">@color/black</item>
+    </style>
+
+    <style name="Theme.Lesson_11_Fokin" parent="Base.Theme.Lesson_11_Fokin" />
+</resources>
