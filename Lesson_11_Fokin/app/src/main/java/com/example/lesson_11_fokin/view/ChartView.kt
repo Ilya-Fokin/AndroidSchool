@@ -11,8 +11,7 @@ import android.view.View
 import android.view.View.OnClickListener
 import androidx.core.content.ContextCompat
 import com.example.lesson_11_fokin.R
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
+import com.example.lesson_11_fokin.model.Data
 import kotlin.math.min
 
 class ChartView : View, OnClickListener {
@@ -33,7 +32,7 @@ class ChartView : View, OnClickListener {
         init(context, attributeSet)
     }
 
-    private var dataMap = mutableMapOf<String, Int>()
+    private var dataList = mutableListOf<Data>()
     private var endListHeight = mutableListOf<Float>()
     private var startListHeight = mutableListOf<Float>()
     private var currentListHeight = mutableListOf<Float>()
@@ -49,6 +48,33 @@ class ChartView : View, OnClickListener {
 
     private var indentText: Float = 0F
     private var maxColumnHeight: Float = 0F
+
+    private val paintLine by lazy {
+        Paint().apply {
+            color = columnColor
+            strokeWidth = columnWidth
+            style = Paint.Style.FILL
+        }
+    }
+
+    private val paintDate by lazy {
+        Paint().apply {
+            color = dateColor
+            style = Paint.Style.FILL
+            textSize = columnTextSize
+            textAlign = Paint.Align.LEFT
+        }
+    }
+
+    private val paintValue by lazy {
+        Paint().apply {
+            color = columnColor
+            style = Paint.Style.FILL
+            textSize = columnTextSize
+            textAlign = Paint.Align.CENTER
+        }
+    }
+
 
     private fun init(context: Context, attributeSet: AttributeSet? = null) {
         val attr = context.obtainStyledAttributes(
@@ -98,62 +124,46 @@ class ChartView : View, OnClickListener {
         setMeasuredDimension(width, height.toInt())
     }
 
-    fun setData(dataList: List<Int>) {
+    fun setData(newDataList: List<Data>) {
         if (dataList.size > 9) {
             return
         }
-        val formatter = DateTimeFormatter.ofPattern("dd.MM")
-        var days = dataList.size.toLong()
-        dataList.forEach {
-            val date = LocalDate.now().minusDays(days - 1).format(formatter)
-            dataMap[date] = it
-            days--
-        }
+        currentListHeight.clear()
+        startListHeight.clear()
+        endListHeight.clear()
+        dataList.clear()
+        dataList.addAll(newDataList)
+        reCalculate()
+        invalidate()
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
-
-        if (dataMap.isNotEmpty()) {
-            indentText = ((width - getDatesWidth()) / (dataMap.size + 1)).toFloat()
-        }
         maxColumnHeight =
-            height.toFloat() - paddingBottom - columnLineMargin * 2 - columnTextSize * 2 - paddingTop
-        dataMap.forEach { date ->
-            currentListHeight.add(height.toFloat() - paddingBottom - getDateHeight(date.key) - columnLineMargin - defaultColumnHeight)
-            startListHeight.add(height.toFloat() - paddingBottom - getDateHeight(date.key) - columnLineMargin - defaultColumnHeight)
-        }
+            measuredHeight - paddingBottom - columnLineMargin * 2 - columnTextSize * 2 - paddingTop
+        reCalculate()
     }
 
-    private val paintLine by lazy {
-        Paint().apply {
-            color = columnColor
-            strokeWidth = columnWidth
-            style = Paint.Style.FILL
-        }
-    }
-
-    private val paintDate by lazy {
-        Paint().apply {
-            color = dateColor
-            style = Paint.Style.FILL
-            textSize = columnTextSize
-            textAlign = Paint.Align.LEFT
-        }
-    }
-
-    private val paintValue by lazy {
-        Paint().apply {
-            color = columnColor
-            style = Paint.Style.FILL
-            textSize = columnTextSize
-            textAlign = Paint.Align.CENTER
+    private fun reCalculate() {
+        if (dataList.isNotEmpty() && measuredHeight != 0) {
+            repeat(dataList.size) {
+                currentListHeight.add(measuredHeight - paddingBottom - getDateHeight(dataList[it].date) - columnLineMargin - defaultColumnHeight)
+                startListHeight.add(measuredHeight - paddingBottom - getDateHeight(dataList[it].date) - columnLineMargin - defaultColumnHeight)
+                endListHeight.add(
+                    measuredHeight - paddingBottom - getDateHeight(dataList[it].date) - columnLineMargin - getColumnHeight(
+                        dataList[it].value
+                    )
+                )
+            }
+            indentText = ((measuredWidth - getDatesWidth()) / (dataList.size + 1)).toFloat()
         }
     }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        drawColumn(canvas)
+        if (dataList.isNotEmpty()) {
+            drawColumn(canvas)
+        }
     }
 
     private fun getDateWidth(text: String): Int {
@@ -167,7 +177,7 @@ class ChartView : View, OnClickListener {
         return bound.width()
     }
 
-    private fun getMaxValue() = dataMap.values.max()
+    private fun getMaxValue() = dataList.maxBy { data -> data.value }
 
     private fun getDateHeight(text: String): Int {
         val bound = Rect()
@@ -181,7 +191,7 @@ class ChartView : View, OnClickListener {
     }
 
     private fun getColumnHeight(value: Int): Float {
-        val maxValue = getMaxValue()
+        val maxValue = getMaxValue().value
         return if (value == maxValue) {
             maxColumnHeight
         } else {
@@ -191,9 +201,9 @@ class ChartView : View, OnClickListener {
 
     private fun getDatesWidth(): Int {
         var width = 0
-        if (dataMap.isNotEmpty()) {
-            dataMap.forEach { (key, value) ->
-                width += getDateWidth(key)
+        if (dataList.isNotEmpty()) {
+            repeat(dataList.size) {
+                width += getDateWidth(dataList[it].date)
             }
         }
         return width
@@ -203,25 +213,19 @@ class ChartView : View, OnClickListener {
         var left = 0F
         var index = 0
 
-        dataMap.forEach {
+        dataList.forEach {
             canvas.drawText(
-                it.key,
+                it.date,
                 left + indentText,
                 height.toFloat() - paddingBottom,
                 paintDate
             )
 
-            endListHeight.add(
-                height.toFloat() - paddingBottom - getDateHeight(it.key) - columnLineMargin - getColumnHeight(
-                    it.value
-                )
-            )
-
             canvas.drawRoundRect(
-                indentText + left + getDateWidth(it.key) / 2,
+                indentText + left + getDateWidth(it.date) / 2,
                 currentListHeight[index],
-                indentText + left + getDateWidth(it.key) / 2 + columnWidth,
-                height.toFloat() - paddingBottom - getDateHeight(it.key) - columnLineMargin,
+                indentText + left + getDateWidth(it.date) / 2 + columnWidth,
+                height.toFloat() - paddingBottom - getDateHeight(it.date) - columnLineMargin,
                 columnCornerRadius,
                 columnCornerRadius,
                 paintLine
@@ -229,12 +233,12 @@ class ChartView : View, OnClickListener {
 
             canvas.drawText(
                 it.value.toString(),
-                indentText + left + getDateWidth(it.key) / 2 + columnWidth / 2,
+                indentText + left + getDateWidth(it.date) / 2 + columnWidth / 2,
                 currentListHeight[index] - columnLineMargin,
                 paintValue
             )
 
-            left += indentText + getDateWidth(it.key)
+            left += indentText + getDateWidth(it.date)
             index++
         }
     }
