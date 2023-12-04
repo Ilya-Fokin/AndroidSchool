@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Lesson_11_Fokin</string>
+    <string name="visit_by_days">ПОСЕЩЕНИЕ ПО ДНЯМ</string>
+    <string name="time_in_minutes">Время указано в минутах</string>
+</resources>
