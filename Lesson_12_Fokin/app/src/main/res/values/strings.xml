@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Lesson_12_Fokin</string>
+    <string name="the_most_spb">The most SPB</string>
+    <string name="update_page">Обновить</string>
+    <string name="image_bridge">Image bridge</string>
+    <string name="description">Описание</string>
+    <string name="error">error</string>
+    <string name="bridge_status">Bridge status</string>
+    <string name="test_name_bridge">Александра Невского</string>
+    <string name="test_time">2:20–5:10</string>
+</resources>
