@@ -20,7 +20,7 @@ class MapBridgesViewModel @Inject constructor(
 
     /** Загрузка мостов из API и передача в фрагмент */
     fun loadBridges() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             _bridgesLiveData.postValue(LoadState.Loading())
             try {
                 val bridges = repository.getBridges()

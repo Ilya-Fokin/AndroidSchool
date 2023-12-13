@@ -21,7 +21,7 @@ class DetailBridgeViewModel @Inject constructor(
 
     /** Загрузка моста по id из API и передача в фрагмент */
     fun loadBridgeById(id: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             _bridgeLiveData.postValue(LoadState.Loading())
             try {
                 val bridge = repository.getBridgeById(id)

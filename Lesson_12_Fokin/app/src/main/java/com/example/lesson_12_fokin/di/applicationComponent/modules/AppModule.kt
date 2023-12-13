@@ -10,6 +10,7 @@ import dagger.android.support.AndroidSupportInjectionModule
         FragmentModule::class,
         ViewModelModule::class,
         RepositoryModule::class,
+        CoroutineModule::class,
         AndroidSupportInjectionModule::class,
     ]
 )
