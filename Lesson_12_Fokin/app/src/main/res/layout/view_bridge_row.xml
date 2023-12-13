@@ -23,6 +23,7 @@
         android:layout_marginStart="@dimen/default_indent"
         app:layout_constraintStart_toEndOf="@id/imageViewBridge"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         tools:text="@string/test_name_bridge" />
 
     <TextView
@@ -32,6 +33,7 @@
         android:layout_marginStart="@dimen/default_indent"
         app:layout_constraintStart_toEndOf="@id/imageViewBridge"
         app:layout_constraintTop_toBottomOf="@id/textViewNameBridge"
+        app:layout_constraintEnd_toEndOf="parent"
         tools:text="@string/test_time" />
 
 </merge>
