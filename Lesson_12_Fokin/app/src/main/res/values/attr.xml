@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="BridgeRowView">
+        <attr name="bridgeTitleColor" format="color" />
+        <attr name="bridgeTitleSize" format="dimension" />
+        <attr name="bridgeTimeSize" format="dimension" />
+    </declare-styleable>
+
+</resources>

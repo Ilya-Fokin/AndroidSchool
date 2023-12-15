@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="default_indent">16dp</dimen>
+    <dimen name="status_bar_height">16dp</dimen>
+    <dimen name="bridge_default_title_size">16sp</dimen>
+    <dimen name="bridge_default_time_size">14sp</dimen>
+    <dimen name="map_pin_size">48dp</dimen>
+</resources>
