@@ -68,6 +68,12 @@ class MainActivity : AppCompatActivity(), NavigationController {
             .commit()
     }
 
+    override fun navigateWithoutBack(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container_view_tag, fragment)
+            .commit()
+    }
+
     override fun back() {
         supportFragmentManager.popBackStack()
     }

@@ -5,10 +5,7 @@ import dagger.android.support.AndroidSupportInjectionModule
 
 @Module(
     includes = [
-        MapPinViewModule::class,
         LocationModule::class,
-        MapObjectsModule::class,
-        BoundingBoxModule::class,
         AndroidSupportInjectionModule::class,
     ]
 )

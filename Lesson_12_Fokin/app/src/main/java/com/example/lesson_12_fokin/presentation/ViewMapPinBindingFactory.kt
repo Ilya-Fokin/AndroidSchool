@@ -1,4 +1,4 @@
-package com.example.lesson_12_fokin.presentation.map
+package com.example.lesson_12_fokin.presentation
 
 import android.view.LayoutInflater
 import com.example.lesson_12_fokin.databinding.ViewMapPinBinding

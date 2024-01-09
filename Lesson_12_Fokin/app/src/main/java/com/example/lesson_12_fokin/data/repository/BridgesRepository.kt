@@ -1,7 +1,7 @@
 package com.example.lesson_12_fokin.data.repository
 
 import com.example.lesson_12_fokin.data.remote.model.ApiBridge
-import com.example.lesson_12_fokin.presentation.bridges.Bridge
+import com.example.lesson_12_fokin.data.remote.model.Bridge
 
 interface BridgesRepository {
 

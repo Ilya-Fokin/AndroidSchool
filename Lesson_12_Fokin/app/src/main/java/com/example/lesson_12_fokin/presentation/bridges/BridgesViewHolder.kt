@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.lesson_12_fokin.R
+import com.example.lesson_12_fokin.data.remote.model.Bridge
 import com.example.lesson_12_fokin.databinding.ItemBridgeBinding
 
 class BridgeViewHolder(

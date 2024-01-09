@@ -1,7 +1,6 @@
 package com.example.lesson_12_fokin.data.remote.model
 
 import com.example.lesson_12_fokin.R
-import com.example.lesson_12_fokin.presentation.bridges.Bridge
 import com.example.lesson_12_fokin.presentation.bridges.StatusBridge
 import com.yandex.mapkit.geometry.Point
 import java.time.Duration
@@ -31,7 +30,7 @@ object BridgeMapper {
     }
 
     /** Маппер для моста, полученного без времени развода из API */
-    fun toBridgeWithoutDivorces(bridge: ApiBridge, divorces: List<Divorce>): Bridge {
+    fun toBridgeWithoutDivorces(bridge: ApiBridge, divorces: List<ApiDivorce>): Bridge {
         val status = setCurrentStatus(divorces)
         return Bridge(
             bridge.id ?: -1,
@@ -56,7 +55,7 @@ object BridgeMapper {
         }
     }
 
-    private fun setCurrentStatus(divorces: List<Divorce>?): StatusBridge {
+    private fun setCurrentStatus(divorces: List<ApiDivorce>?): StatusBridge {
         val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
         var status: StatusBridge = StatusBridge.DIVORCED
 

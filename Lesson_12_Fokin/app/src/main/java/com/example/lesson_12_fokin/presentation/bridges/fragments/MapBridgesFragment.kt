@@ -1,6 +1,7 @@
 package com.example.lesson_12_fokin.presentation.bridges.fragments
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -9,9 +10,7 @@ import android.location.Location
 import android.os.Build
 import android.os.Bundle
 import android.os.Looper
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.WindowInsets
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
@@ -25,9 +24,9 @@ import com.example.lesson_12_fokin.databinding.FragmentBridgesMapBinding
 import com.example.lesson_12_fokin.extensions.toBitmap
 import com.example.lesson_12_fokin.presentation.BoundingBoxBuilder
 import com.example.lesson_12_fokin.presentation.NavigationController
-import com.example.lesson_12_fokin.presentation.bridges.Bridge
+import com.example.lesson_12_fokin.presentation.ViewMapPinBindingFactory
+import com.example.lesson_12_fokin.data.remote.model.Bridge
 import com.example.lesson_12_fokin.presentation.bridges.viewModels.MapBridgesViewModel
-import com.example.lesson_12_fokin.presentation.map.ViewMapPinBindingFactory
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -48,6 +47,8 @@ import com.yandex.runtime.image.ImageProvider
 import javax.inject.Inject
 
 private const val YANDEX_ZOOM_REDUCTION_COEFFICIENT = 0.8f
+private const val YANDEX_CLUSTER_RADIUS = 45.0
+private const val YANDEX_CLUSTER_MIN_ZOOM = 20
 
 class MapBridgesFragment : BaseFragment(R.layout.fragment_bridges_map) {
 
@@ -57,25 +58,25 @@ class MapBridgesFragment : BaseFragment(R.layout.fragment_bridges_map) {
 
     private var collection: ClusterizedPlacemarkCollection? = null
 
-    @Inject
-    lateinit var viewMapPinBindingFactory: ViewMapPinBindingFactory
-    private val mapPinViewBinding by lazy { viewMapPinBindingFactory.create(layoutInflater) }
     private val mapPinSize by lazy { resources.getDimensionPixelSize(R.dimen.map_pin_size) }
 
-    @Inject
-    lateinit var boundingBoxBuilder: BoundingBoxBuilder
+    private lateinit var boundingBoxBuilder: BoundingBoxBuilder
+
+    private var lastLocation: Location? = null
+
+    private var activityNav: NavigationController? = null
+
+    private var mapObjects: MutableMap<PlacemarkMapObject, Bridge> = mutableMapOf()
+
+    private val locationRequest by lazy { LocationRequest.Builder(10000).build() }
 
     @Inject
-    lateinit var lastLocation: Location
+    lateinit var viewMapPinBindingFactory: ViewMapPinBindingFactory
 
-    @Inject
-    lateinit var mapObjects: MutableMap<PlacemarkMapObject, Bridge>
+    private val mapPinViewBinding by lazy { viewMapPinBindingFactory.create(layoutInflater) }
 
     @Inject
     lateinit var fusedLocationClient: FusedLocationProviderClient
-
-    @Inject
-    lateinit var locationRequest: LocationRequest
 
     private val clusterListener = ClusterListener { cluster ->
         mapPinViewBinding.textViewName.text = cluster.size.toString()
@@ -138,34 +139,16 @@ class MapBridgesFragment : BaseFragment(R.layout.fragment_bridges_map) {
         viewModel.loadBridges()
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-
-        val rootView = inflater.inflate(R.layout.fragment_bridges_map, container, false)
-        rootView.findViewById<View>(R.id.materialToolbar)
-            .setOnApplyWindowInsetsListener { view, windowInsets ->
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                    val systemBarsInsets = windowInsets.getInsets(WindowInsets.Type.systemBars())
-                    view.updatePadding(
-                        top = systemBarsInsets.top
-                    )
-                } else {
-                    view.updatePadding(
-                        top = windowInsets.systemWindowInsetTop
-                    )
-                }
-                windowInsets
-            }
-        return rootView
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initInsets()
+
+        activityNav = activity as NavigationController
+
         bridgeLiveDataObserve()
+
+        restoreUiState()
 
         collection = binding.mapView.mapWindow.map.mapObjects
             .addClusterizedPlacemarkCollection(clusterListener)
@@ -173,7 +156,7 @@ class MapBridgesFragment : BaseFragment(R.layout.fragment_bridges_map) {
         binding.mapView.mapWindow.map.addInputListener(inputListener)
 
         binding.buttonOnLocation.setOnClickListener {
-            moveOnLocation(lastLocation)
+            lastLocation?.let { it1 -> moveOnLocation(it1) }
         }
 
         binding.materialButtonRepeat.setOnClickListener {
@@ -182,7 +165,7 @@ class MapBridgesFragment : BaseFragment(R.layout.fragment_bridges_map) {
 
         binding.materialToolbar.menu.findItem(R.id.menuButtonToList).setOnMenuItemClickListener {
             val bridgesFragment = BridgesFragment.newInstance()
-            (activity as? NavigationController)?.navigate(bridgesFragment)
+            activityNav?.navigateWithoutBack(bridgesFragment)
             true
         }
 
@@ -213,15 +196,14 @@ class MapBridgesFragment : BaseFragment(R.layout.fragment_bridges_map) {
         super.onStop()
     }
 
+    override fun onDestroyView() {
+        activityNav = null
+        super.onDestroyView()
+    }
+
+    @SuppressLint("MissingPermission")
     private fun updateLocation() {
-        if (ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
+        if (isPermissionNotGranted()) {
             binding.buttonOnLocation.isVisible = true
             fusedLocationClient.requestLocationUpdates(
                 locationRequest,
@@ -231,15 +213,9 @@ class MapBridgesFragment : BaseFragment(R.layout.fragment_bridges_map) {
         }
     }
 
+    @SuppressLint("MissingPermission")
     private fun startLocation() {
-        if (ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
+        if (isPermissionNotGranted()) {
             permissionLauncher.launch(
                 arrayOf(
                     Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -255,6 +231,14 @@ class MapBridgesFragment : BaseFragment(R.layout.fragment_bridges_map) {
                 }
         }
     }
+
+    private fun isPermissionNotGranted() = ActivityCompat.checkSelfPermission(
+        requireContext(),
+        Manifest.permission.ACCESS_FINE_LOCATION
+    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+        requireContext(),
+        Manifest.permission.ACCESS_COARSE_LOCATION
+    ) != PackageManager.PERMISSION_GRANTED
 
     private fun updateLocationPlacemark(location: Location) {
         binding.mapView.mapWindow.map.mapObjects.addPlacemark().apply {
@@ -272,16 +256,33 @@ class MapBridgesFragment : BaseFragment(R.layout.fragment_bridges_map) {
         binding.cardBridge.setOnClickListener {
             val detailFragment =
                 DetailBridgeFragment.newInstance(bridge.id, ArrayList(bridge.divorces))
-            (activity as? NavigationController)?.navigate(detailFragment)
+            viewModel.setBridge(bridge, binding.mapView.mapWindow.map.cameraPosition)
+            activityNav?.navigate(detailFragment)
         }
         binding.bridgeRowView.bind(bridge)
         binding.cardBridge.isVisible = true
     }
 
+    private fun initInsets() {
+        binding.materialToolbar.setOnApplyWindowInsetsListener { view, windowInsets ->
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                val systemBarsInsets = windowInsets.getInsets(WindowInsets.Type.systemBars())
+                view.updatePadding(
+                    top = systemBarsInsets.top
+                )
+            } else {
+                view.updatePadding(
+                    top = windowInsets.systemWindowInsetTop
+                )
+            }
+            windowInsets
+        }
+    }
+
     private fun moveOnLocation(location: Location) {
         binding.mapView.mapWindow.map.move(
             CameraPosition(
-                Point(location.latitude, location.longitude), 10f, 0f, 0f
+                Point(location.latitude, location.longitude), 45f, 0f, 0f
             )
         )
     }
@@ -303,6 +304,10 @@ class MapBridgesFragment : BaseFragment(R.layout.fragment_bridges_map) {
         binding.mapView.mapWindow.map.move(targetCameraPosition)
     }
 
+    private fun moveOnCameraPosition(cameraPosition: CameraPosition) {
+        binding.mapView.mapWindow.map.move(cameraPosition)
+    }
+
     private fun createBitmapFromVector(art: Int): Bitmap? {
         val drawable = ContextCompat.getDrawable(requireContext(), art) ?: return null
         val bitmap = Bitmap.createBitmap(
@@ -314,6 +319,17 @@ class MapBridgesFragment : BaseFragment(R.layout.fragment_bridges_map) {
         drawable.setBounds(0, 0, canvas.width, canvas.height)
         drawable.draw(canvas)
         return bitmap
+    }
+
+    private fun restoreUiState() {
+        viewModel.pairCameraToBridgeLiveData.observe(viewLifecycleOwner) { pair ->
+            if (pair != null) {
+                moveOnCameraPosition(
+                    pair.first
+                )
+                showItemBridge(pair.second)
+            }
+        }
     }
 
     private fun bridgeLiveDataObserve() {
@@ -342,14 +358,15 @@ class MapBridgesFragment : BaseFragment(R.layout.fragment_bridges_map) {
                             mapObjects[this] = bridge
                         }
                     }
-                    collection?.clusterPlacemarks(45.0, 20)
-                    binding.frameLayoutMap.isVisible = true
-
-                    moveOnCluster(BoundingBoxBuilder().apply {
-                        mapObjects.values.forEach { mapBridge ->
-                            include(mapBridge.point)
+                    collection?.clusterPlacemarks(YANDEX_CLUSTER_RADIUS, YANDEX_CLUSTER_MIN_ZOOM)
+                    moveOnCluster(
+                        BoundingBoxBuilder().apply {
+                            mapObjects.values.forEach { mapBridge ->
+                                include(mapBridge.point)
+                            }
                         }
-                    })
+                    )
+                    binding.frameLayoutMap.isVisible = true
                     binding.progressBar.isVisible = false
                     binding.frameLayoutMap.isVisible = true
                     binding.appBarLayout.isVisible = true

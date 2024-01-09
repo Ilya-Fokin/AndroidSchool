@@ -3,6 +3,7 @@ package com.example.lesson_12_fokin.presentation.bridges
 import android.annotation.SuppressLint
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.lesson_12_fokin.data.remote.model.Bridge
 
 class BridgesAdapter : RecyclerView.Adapter<BridgeViewHolder>() {
     lateinit var bridgeCardListener: BridgeCardListener

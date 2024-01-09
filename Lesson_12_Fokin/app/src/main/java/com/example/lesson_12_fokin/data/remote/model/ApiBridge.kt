@@ -11,7 +11,7 @@ class ApiBridge(
     @SerializedName("name_eng") val nameEng: String?,
     @SerializedName("description") val description: String?,
     @SerializedName("description_eng") val descriptionEng: String?,
-    @SerializedName("divorces") val divorces: List<Divorce>?,
+    @SerializedName("divorces") val divorces: List<ApiDivorce>?,
     @SerializedName("lat") val lat: Double?,
     @SerializedName("lng") val lng: Double?,
     @SerializedName("photo_close_url") val closedUrl: String?,
@@ -20,7 +20,7 @@ class ApiBridge(
 ) : Parcelable
 
 @Parcelize
-class Divorce(
+class ApiDivorce(
     @SerializedName("start") val start: String?,
     @SerializedName("end") val end: String?
 ) : Parcelable

@@ -2,10 +2,11 @@ package com.example.lesson_12_fokin.presentation
 
 import com.yandex.mapkit.geometry.BoundingBox
 import com.yandex.mapkit.geometry.Point
+import java.io.Serializable
 import kotlin.math.max
 import kotlin.math.min
 
-class BoundingBoxBuilder {
+class BoundingBoxBuilder : Serializable {
     private var south = Double.POSITIVE_INFINITY
     private var north = Double.NEGATIVE_INFINITY
     private var west = Double.NaN

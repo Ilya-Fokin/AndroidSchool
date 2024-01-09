@@ -20,58 +20,46 @@ import com.example.lesson_12_fokin.presentation.bridges.viewModels.BridgesViewMo
 class BridgesFragment : BaseFragment(R.layout.fragment_bridges) {
 
     private val binding by viewBinding(FragmentBridgesBinding::bind)
+
     private val viewModel: BridgesViewModel by appViewModels()
 
     private val bridgesAdapter = BridgesAdapter()
+
+    private var activityNav: NavigationController? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.loadBridges()
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-
-        val rootView = inflater.inflate(R.layout.fragment_bridges, container, false)
-
-        rootView.findViewById<View>(R.id.materialToolbar)
-            .setOnApplyWindowInsetsListener { view, windowInsets ->
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                    val systemBarsInsets = windowInsets.getInsets(WindowInsets.Type.systemBars())
-                    view.updatePadding(
-                        top = systemBarsInsets.top
-                    )
-                } else {
-                    view.updatePadding(
-                        top = windowInsets.systemWindowInsetTop
-                    )
-                }
-                windowInsets
-            }
-        return rootView
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        initInsets()
+
+        activityNav = activity as NavigationController
+
+        bridgeLiveDataObserve()
 
         binding.recyclerView.adapter = bridgesAdapter.apply {
             bridgeCardListener = BridgeCardListener {
                 val detailFragment = DetailBridgeFragment.newInstance(it.id, ArrayList(it.divorces))
-                (activity as? NavigationController)?.navigate(detailFragment)
+                activityNav?.navigate(detailFragment)
             }
         }
-        bridgeLiveDataObserve()
         binding.materialToolbar.menu.findItem(R.id.menuButtonToMap).setOnMenuItemClickListener {
             val mapFragment = MapBridgesFragment.newInstance()
-            (activity as? NavigationController)?.navigate(mapFragment)
+            activityNav?.navigateWithoutBack(mapFragment)
             true
         }
         binding.buttonUpdate.setOnClickListener {
             viewModel.loadBridges()
         }
+    }
+
+    override fun onDestroyView() {
+        activityNav = null
+        super.onDestroyView()
     }
 
     private fun bridgeLiveDataObserve() {
@@ -97,6 +85,22 @@ class BridgesFragment : BaseFragment(R.layout.fragment_bridges) {
                     binding.errorLayout.isVisible = true
                 }
             }
+        }
+    }
+
+    private fun initInsets() {
+        binding.materialToolbar.setOnApplyWindowInsetsListener { view, windowInsets ->
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                val systemBarsInsets = windowInsets.getInsets(WindowInsets.Type.systemBars())
+                view.updatePadding(
+                    top = systemBarsInsets.top
+                )
+            } else {
+                view.updatePadding(
+                    top = windowInsets.systemWindowInsetTop
+                )
+            }
+            windowInsets
         }
     }
 

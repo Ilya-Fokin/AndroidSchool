@@ -8,9 +8,9 @@ import androidx.annotation.ColorInt
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.example.lesson_12_fokin.R
-import com.example.lesson_12_fokin.data.remote.model.Divorce
+import com.example.lesson_12_fokin.data.remote.model.ApiDivorce
 import com.example.lesson_12_fokin.databinding.ViewBridgeRowBinding
-import com.example.lesson_12_fokin.presentation.bridges.Bridge
+import com.example.lesson_12_fokin.data.remote.model.Bridge
 
 class BridgeRowView : ConstraintLayout {
 
@@ -78,7 +78,7 @@ class BridgeRowView : ConstraintLayout {
         binding.textViewTime.setTextSize(TypedValue.COMPLEX_UNIT_PX, dimen.toFloat())
     }
 
-    private fun setStringDivorces(divorces: List<Divorce>?): String {
+    private fun setStringDivorces(divorces: List<ApiDivorce>?): String {
         val times = StringBuilder()
         if (divorces?.isNotEmpty() == true) {
             repeat(divorces.size) { index ->

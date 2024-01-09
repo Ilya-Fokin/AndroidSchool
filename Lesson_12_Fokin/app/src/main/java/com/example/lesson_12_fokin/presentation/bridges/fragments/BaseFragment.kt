@@ -13,6 +13,7 @@ abstract class BaseFragment(@LayoutRes layoutRes: Int) : DaggerFragment(layoutRe
 
     @Inject
     lateinit var daggerViewModelFactory: DaggerViewModelFactory
+
     protected inline fun <reified VM : ViewModel> appViewModels() =
         createViewModelLazy(VM::class, { viewModelStore }) {
             daggerViewModelFactory

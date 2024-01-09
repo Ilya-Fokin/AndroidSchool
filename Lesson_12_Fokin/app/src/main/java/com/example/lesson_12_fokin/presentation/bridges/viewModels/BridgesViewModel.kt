@@ -6,9 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.lesson_12_fokin.data.remote.LoadState
 import com.example.lesson_12_fokin.data.repository.BridgesRepository
-import com.example.lesson_12_fokin.presentation.bridges.Bridge
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import com.example.lesson_12_fokin.data.remote.model.Bridge
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

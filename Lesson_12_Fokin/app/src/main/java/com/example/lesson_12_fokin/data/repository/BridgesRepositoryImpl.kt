@@ -4,8 +4,7 @@ import com.example.lesson_12_fokin.data.remote.MainApiService
 import com.example.lesson_12_fokin.data.remote.model.ApiBridge
 import com.example.lesson_12_fokin.data.remote.model.BridgeMapper
 import com.example.lesson_12_fokin.di.applicationComponent.modules.DispatcherProvider
-import com.example.lesson_12_fokin.presentation.bridges.Bridge
-import kotlinx.coroutines.Dispatchers
+import com.example.lesson_12_fokin.data.remote.model.Bridge
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
